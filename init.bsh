@@ -1,15 +1,20 @@
 #!/bin/bash
 
+#[of]:setup vars
 typeset lc_path
 lc_path=$(cd ${0%/*};pwd)
+#[cf]
+#[of]:main
 
 #set -xv
 
-unset gl_layer
-while ! [[ "${gl_layer}" =~ [34] ]] ; do
-  read -n 1 -p "layer3 or layer4 [3/4] " gl_layer
+#[of]:parse command line
+gl_layer="$1"
+while ! [[ "${gl_layer}" =~ [234] ]] ; do
+  read -n 1 -p "select layer to build through to [2/3/4] " gl_layer
   echo
 done
+#[cf]
 
 #XQuartz defaults
 #"app_to_run" = "/opt/X11/bin/xterm";
@@ -20,50 +25,74 @@ done
 #"wm_click_through" = 0;
 #"wm_ffm" = 0;
 
-( cd layer1-base;docker build -t workbench-layer1:0.1.0 . ) && \
-( cd layer2-commandline;docker build -t workbench-layer2:0.1.0 . ) && \
-( cd layer3-xconnect;docker build -t workbench-layer3:0.1.0 . ) || exit 1
-
-if [[ "${gl_layer}" == 3 ]] ; then
+#[of]:build through to layer 1
+( cd layer1-base;docker build -t workbench-layer1:0.1.0 . ) || exit 1
+#[cf]
+#[of]:build through to layer 2 - terminal only apps
+if (( gl_layer >= 2 )) ; then
+  ( cd layer2-commandline;docker build -t workbench-layer2:0.1.0 . ) || exit 1
+fi
+#[cf]
+#[of]:build through to layer 3 - adds X apps
+if (( gl_layer >= 3 )) ; then
+  ( cd layer3-xconnect;docker build -t workbench-layer3:0.1.0 . ) || exit 1
+fi
+#[cf]
+#[of]:configure XQuartz for windowed mode if layer3 or less
+[[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer <= 3 )) ; then
+#[of]:  configure options for windowed mode
   #XQuartz windowed
   defaults write org.macosforge.xquartz.X11 "app_to_run" "/bin/true"
   defaults write org.macosforge.xquartz.X11 rootless -int 1
   defaults write org.macosforge.xquartz.X11 "fullscreen_menu" -int 1
   defaults write org.macosforge.xquartz.X11 "nolisten_tcp" -int 0
-  defaults write org.macosforge.xquartz.X11 "option_sends_alt" -int 0
-  defaults write org.macosforge.xquartz.X11 "sync_pasteboard" -int 1
+  defaults write org.macosforge.xquartz.X11 "option_sends_alt" -int 1
+  defaults write org.macosforge.xquartz.X11 "sync_pasteboard" -int 0
   defaults write org.macosforge.xquartz.X11 "wm_click_through" -int 0
   defaults write org.macosforge.xquartz.X11 "wm_ffm" -int 0
-
+#[cf]
+#[of]:  remove desktop manager startup scripts
   rm -f ~/.xinitrc.d/99-wm.sh
-else
+#[cf]
+fi
+#[cf]
+#[of]:build through to layer 4 - the desktop manager
+if (( gl_layer >= 4 )) ; then
+  ( cd layer4-desktop;docker build -t workbench-layer4:0.1.0 . ) || exit 1
+#[of]:  configure XQuartz for fullscreen mode if layer4
+  [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer == 4 )) ; then
+#[of]:    configure options for fullscreen
   #XQuartz fullscreen with desktop manager
   defaults write org.macosforge.xquartz.X11 "app_to_run" "/bin/true"
   defaults write org.macosforge.xquartz.X11 rootless -int 0
   defaults write org.macosforge.xquartz.X11 "fullscreen_menu" -int 0
   defaults write org.macosforge.xquartz.X11 "nolisten_tcp" -int 0
   defaults write org.macosforge.xquartz.X11 "option_sends_alt" -int 1
-  defaults write org.macosforge.xquartz.X11 "sync_pasteboard" -int 0;
+  defaults write org.macosforge.xquartz.X11 "sync_pasteboard" -int 0
   defaults write org.macosforge.xquartz.X11 "wm_click_through" -int 0
   defaults write org.macosforge.xquartz.X11 "wm_ffm" -int 0
-
-  ( cd layer4-desktop;docker build -t workbench-layer4:0.1.0 . ) || exit 1
+#[cf]
+#[of]:    add XQuartz desktop manager startup scripts
   mkdir -p ~/.xinitrc.d
   cp -af 99-wm.sh ~/.xinitrc.d/99-wm.sh
   chmod 755 ~/.xinitrc.d/99-wm.sh
+#[cf]
+  fi
+#[cf]
 fi
+#[cf]
 
 
-#$(a=( $(ifconfig en0 | grep -e "inet ") );echo ${a[1]})
-#IP=$(ifconfig en0 | grep "inet " | awk '$1=="inet" {print $2}')
-
+#[of]:recreate workbench container
 docker stop workbench
 docker rm workbench
 docker run \
   -v ${HOME}/projects:/projects \
   -v ${HOME}/.ssh:/root/.ssh \
+  -v ${HOME}/.vagrant.d/boxes:/root/.vagrant.d/boxes \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -e DISPLAY=docker.for.mac.localhost:0 \
+  -p 10000:10000 \
   -d \
   --restart always \
   --name workbench \
@@ -72,12 +101,19 @@ docker run \
   workbench-layer${gl_layer}:0.1.0
 #  -v /tmp/.X11-unix:/tmp/.X11-unix \
 #  -e DISPLAY=:0 \
-
-
-#touch ${HOME}/init.lock
-killall Xquartz
-open /Applications/Utilities/XQuartz.app
-xhost + localhost
-#rm -f ${HOME}/init.lock
-
+#[cf]
+#[of]:if layer3 or higher handle XQuartz restart
+[[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer >= 3 )) ; then
+#[of]:  force restart XQuartz
+  killall Xquartz
+  open /Applications/Utilities/XQuartz.app
+#[cf]
+#[of]:  add perms to run local x apps via tcp socket
+  xhost + localhost
+#[cf]
+fi
+#[cf]
+#[of]:exec into workbench bash shell
 docker exec -ti workbench /bin/bash -l
+#[cf]
+#[cf]

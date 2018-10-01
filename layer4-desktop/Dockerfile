@@ -9,33 +9,21 @@ MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
 ENV TERM linux
 
-RUN apt-get update
-# && \
-RUN apt-get install -y -q \
+RUN apt-get update && \
+  apt-get install -y -q \
     icewm icewm-themes \
-    rox-filer \
     fbpanel && \
   apt-get clean && \
   rm -rf /tmp/* /var/tmp/* && \
   rm -rf /var/lib/apt/lists/*
 
-COPY packages.tar.bz2 /
-RUN tar jxvf /packages.tar.bz2 -C /
-RUN rm -f /packages.tar.bz2
+COPY packages-icewm.tar.bz2 /
+RUN tar jxvf /packages-icewm.tar.bz2 -C /
+RUN rm -f /packages-icewm.tar.bz2
 RUN cd /packages && \
-  ./linkit shutils-0.0.0 && \
-  ./linkit iceicons-0.10.0 && \
-  ./linkit icewm-themes-030820 && \
   ./linkit dlist-1.0.1 && \
-  ./linkit docker-code-browser-2.18
-
-COPY skel.tar.bz2 /
-RUN tar jxvf /skel.tar.bz2 -C /
-RUN rm -f /skel.tar.bz2
-RUN cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ && \
-  chown root.root /root -Rc
-
-#RUN apt-file update
+  ./linkit iceicons-0.10.0 && \
+  ./linkit icewm-themes-030820
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
