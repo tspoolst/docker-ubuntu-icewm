@@ -1,8 +1,8 @@
 #name of container: workbench
-#name of image: workbench-layer1
-#versison of image: 0.1.0
+#name of image: tspoolst/docker-ubuntu-icewm:workbench-layer1
+#versison of image: 0.2.0
 
-#docker build -t workbench-layer1:0.1.0 .
+#docker build -t workbench-layer1:0.2.0 .
 
 FROM quantumobject/docker-baseimage:16.04
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
