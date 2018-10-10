@@ -17,11 +17,12 @@ RUN apt-get update && \
     iputils-ping openssh-client \
     nmap tcpdump iftop \
     docker.io \
-    make gcc ruby ruby-dev \
+    make gcc ruby ruby-dev python-pip \
     software-properties-common && \
   apt-get clean && \
   rm -rf /tmp/* /var/tmp/* && \
   rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip
 #[of]:install ansible
 RUN apt-add-repository ppa:ansible/ansible && \
   apt-get update && \
