@@ -1,5 +1,5 @@
 #name of container: workbench
-#name of image: workbench-layer1
+#name of image: tspoolst/docker-ubuntu-icewm:workbench-layer1
 #versison of image: 0.1.0
 
 #docker build -t workbench-layer1:0.1.0 .
