@@ -4,7 +4,8 @@
 
 #docker build -t workbench-layer3:0.1.0 .
 
-FROM workbench-layer2:0.1.0
+FROM tspoolst/docker-ubuntu-icewm:layer2-commandline-0.1.0
+#FROM workbench-layer2:0.1.0
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
 ENV TERM linux
