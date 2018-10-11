@@ -4,7 +4,7 @@
 
 #docker build -t workbench-layer2:0.2.0 .
 
-FROM tspoolst/docker-ubuntu-icewm:layer1-base-0.2.0
+FROM tspoolst/docker-ubuntu-icewm:layer1-0.2.0
 #FROM workbench-layer1:0.2.0
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 

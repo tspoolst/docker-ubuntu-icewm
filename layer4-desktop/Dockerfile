@@ -4,7 +4,7 @@
 
 #docker build -t workbench-layer4:0.2.0 .
 
-FROM tspoolst/docker-ubuntu-icewm:layer3-xconnect-0.2.0
+FROM tspoolst/docker-ubuntu-icewm:layer3-0.2.0
 #FROM workbench-layer3:0.2.0
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
