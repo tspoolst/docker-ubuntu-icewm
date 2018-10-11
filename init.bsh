@@ -82,6 +82,12 @@ if (( gl_layer >= 4 )) ; then
 fi
 #[cf]
 
+if [[ "$(uname -s)" == "Darwin" ]] ; then
+  _options[${#_options[@]}]="-e DISPLAY=docker.for.mac.localhost:0"
+else
+  _options[${#_options[@]}]="-v /tmp/.X11-unix:/tmp/.X11-unix"
+  _options[${#_options[@]}]="-e DISPLAY=:0"
+fi
 
 #[of]:recreate workbench container
 set -xv
@@ -94,16 +100,14 @@ docker run \
   -v ${HOME}/.ssh:/root/.ssh \
   -v ${HOME}/.vagrant.d/boxes:/root/.vagrant.d/boxes \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -e DISPLAY=docker.for.mac.localhost:0 \
-  -p 10000:10000 \
+  ${_options[@]} \
   -d \
   --restart always \
   --name workbench \
   -l workbench \
   -h workbench \
+  --privileged \
   tspoolst/docker-ubuntu-icewm:layer${gl_layer}-0.2.0
-#  -v /tmp/.X11-unix:/tmp/.X11-unix \
-#  -e DISPLAY=:0 \
 #[cf]
 #[of]:if layer3 or higher handle XQuartz restart
 [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer >= 3 )) ; then
@@ -120,3 +124,4 @@ fi
 docker exec -ti workbench /bin/bash -l
 #[cf]
 #[cf]
+# vim:number:tabstop=2:shiftwidth=2:autoindent:foldmethod=marker:foldlevel=0:foldmarker=#[of],#[cf]

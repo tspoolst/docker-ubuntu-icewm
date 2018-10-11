@@ -10,6 +10,8 @@ MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
 ENV TERM linux
 
+COPY keyboard /etc/default/keyboard
+
 #[of]:add the Xpra repo
 RUN wget -q -O - https://xpra.org/gpg.asc | apt-key add - && \
   wget -q -O - https://xpra.org/repos/xenial/xpra.list > /etc/apt/sources.list.d/xpra.list
