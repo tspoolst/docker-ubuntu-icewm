@@ -1,12 +1,25 @@
 #!/bin/bash
 
+#[of]:functions
+function fn_buildLayer {
+  typeset lc_layer
+  lc_layer=layer$1
+  if ${gl_rebuildflag} || ! shasum -s -c Dockerfile.sh1 ; then
+    gl_rebuildflag=true
+    docker build -t tspoolst/docker-ubuntu-icewm:${lc_layer}-0.2.0 . && shasum Dockerfile > Dockerfile.sh1 || exit 1
+  elif docker images -q tspoolst/docker-ubuntu-icewm:${lc_layer}-0.2.0 | grep -q . ; then
+    docker pull tspoolst/docker-ubuntu-icewm:${lc_layer}-0.2.0 || exit 1
+  fi
+}
+#[cf]
+
 #[of]:setup vars
 typeset lc_path
 lc_path=$(cd ${0%/*};pwd)
 #[cf]
 #[of]:main
 
-#set -xv
+cd ${lc_path}
 
 #[of]:parse command line
 gl_layer="$1"
@@ -25,17 +38,26 @@ done
 #"wm_click_through" = 0;
 #"wm_ffm" = 0;
 
+gl_rebuildflag=false
+
 #[of]:build through to layer 1
-( cd layer1-base;docker build -t tspoolst/docker-ubuntu-icewm:layer1-0.2.0 . ) || exit 1
+cd layer1-base
+fn_buildLayer 1
+cd ${lc_path}
 #[cf]
+
 #[of]:build through to layer 2 - terminal only apps
 if (( gl_layer >= 2 )) ; then
-  ( cd layer2-commandline;docker build -t tspoolst/docker-ubuntu-icewm:layer2-0.2.0 . ) || exit 1
+  cd layer2-commandline
+  fn_buildLayer 2
+  cd ${lc_path}
 fi
 #[cf]
 #[of]:build through to layer 3 - adds X apps
 if (( gl_layer >= 3 )) ; then
-  ( cd layer3-xconnect;docker build -t tspoolst/docker-ubuntu-icewm:layer3-0.2.0 . ) || exit 1
+  cd layer3-xconnect
+  fn_buildLayer 3
+  cd ${lc_path}
 fi
 #[cf]
 #[of]:configure XQuartz for windowed mode if layer3 or less
@@ -58,7 +80,9 @@ fi
 #[cf]
 #[of]:build through to layer 4 - the desktop manager
 if (( gl_layer >= 4 )) ; then
-  ( cd layer4-desktop;docker build -t tspoolst/docker-ubuntu-icewm:layer4-0.2.0 . ) || exit 1
+  cd layer4-desktop
+  fn_buildLayer 4
+  cd ${lc_path}
 #[of]:  configure XQuartz for fullscreen mode if layer4
   [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer == 4 )) ; then
 #[of]:    configure options for fullscreen
@@ -90,7 +114,6 @@ else
 fi
 
 #[of]:recreate workbench container
-set -xv
 docker ps -a | tail -n +2 | grep -q workbench && {
   docker stop workbench
   docker rm workbench
