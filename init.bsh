@@ -26,16 +26,16 @@ done
 #"wm_ffm" = 0;
 
 #[of]:build through to layer 1
-( cd layer1-base;docker build -t workbench-layer1:0.1.0 . ) || exit 1
+( cd layer1-base;docker build -t tspoolst/docker-ubuntu-icewm:layer1-base-0.2.0 . ) || exit 1
 #[cf]
 #[of]:build through to layer 2 - terminal only apps
 if (( gl_layer >= 2 )) ; then
-  ( cd layer2-commandline;docker build -t workbench-layer2:0.1.0 . ) || exit 1
+  ( cd layer2-commandline;docker build -t tspoolst/docker-ubuntu-icewm:layer2-commandline-0.2.0 . ) || exit 1
 fi
 #[cf]
 #[of]:build through to layer 3 - adds X apps
 if (( gl_layer >= 3 )) ; then
-  ( cd layer3-xconnect;docker build -t workbench-layer3:0.1.0 . ) || exit 1
+  ( cd layer3-xconnect;docker build -t tspoolst/docker-ubuntu-icewm:layer3-xconnect-0.2.0 . ) || exit 1
 fi
 #[cf]
 #[of]:configure XQuartz for windowed mode if layer3 or less
@@ -58,7 +58,7 @@ fi
 #[cf]
 #[of]:build through to layer 4 - the desktop manager
 if (( gl_layer >= 4 )) ; then
-  ( cd layer4-desktop;docker build -t workbench-layer4:0.1.0 . ) || exit 1
+  ( cd layer4-desktop;docker build -t tspoolst/docker-ubuntu-icewm:layer4-desktop-0.2.0 . ) || exit 1
 #[of]:  configure XQuartz for fullscreen mode if layer4
   [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer == 4 )) ; then
 #[of]:    configure options for fullscreen
