@@ -1,25 +1,46 @@
 #!/bin/bash
 
 #[of]:functions
-function fn_buildLayer {
+
+function layer_exist {
+  docker images -q $(imageBaseName $1) | grep -q .
+}
+
+function imageBaseName {
+  echo "tspoolst/docker-ubuntu-icewm:layer${1}-0.2.0"
+}
+
+function setup_layer {
+
   typeset lc_layer
-  lc_layer=layer$1
-  if ${gl_rebuildflag} || ! shasum -s -c Dockerfile.sh1 ; then
-    gl_rebuildflag=true
-    docker build -t tspoolst/docker-ubuntu-icewm:${lc_layer}-0.2.0 . && shasum Dockerfile > Dockerfile.sh1 || exit 1
-  elif docker images -q tspoolst/docker-ubuntu-icewm:${lc_layer}-0.2.0 | grep -q . ; then
-    docker pull tspoolst/docker-ubuntu-icewm:${lc_layer}-0.2.0 || exit 1
+  lc_layer=$1
+
+  ((lc_layer != 1)) && setup_layer $((lc_layer - 1))
+  cd ${gl_basepath}/layer${lc_layer}-*
+  #Dockerfile changed, build
+  if ${gl_buildflag} || \
+      ! shasum -s -c Dockerfile.sh1 > /dev/null 2>&1 || \
+      { ((lc_layer != 1)) && \
+        layer_exist ${lc_layer} && \
+        docker inspect --type image --format='{{.RepoDigests}}' $(imageBaseName ${lc_layer}) | grep -q -v '\[\]' && \
+        docker inspect --type image --format='{{.RepoDigests}}' $(imageBaseName $((lc_layer-1)) ) | grep -q '\[\]'
+      }
+    then
+      gl_buildflag="true"
+      docker build -t $(imageBaseName ${lc_layer}) . && shasum Dockerfile > Dockerfile.sh1 || exit 1
+  elif ! layer_exist ${lc_layer} ; then
+    docker pull $(imageBaseName ${lc_layer}) || exit 1
   fi
 }
 #[cf]
 
+#set -x
+
 #[of]:setup vars
-typeset lc_path
-lc_path=$(cd ${0%/*};pwd)
+gl_basepath=$(cd ${0%/*};pwd)
+gl_buildflag="false"
 #[cf]
 #[of]:main
-
-cd ${lc_path}
 
 #[of]:parse command line
 gl_layer="$1"
@@ -38,30 +59,14 @@ done
 #"wm_click_through" = 0;
 #"wm_ffm" = 0;
 
-gl_rebuildflag=false
-
-#[of]:build through to layer 1
-cd layer1-base
-fn_buildLayer 1
-cd ${lc_path}
+#[of]:build up to layer
+setup_layer ${gl_layer}
 #[cf]
 
-#[of]:build through to layer 2 - terminal only apps
-if (( gl_layer >= 2 )) ; then
-  cd layer2-commandline
-  fn_buildLayer 2
-  cd ${lc_path}
-fi
-#[cf]
-#[of]:build through to layer 3 - adds X apps
-if (( gl_layer >= 3 )) ; then
-  cd layer3-xconnect
-  fn_buildLayer 3
-  cd ${lc_path}
-fi
-#[cf]
+cd ${gl_basepath}
+
 #[of]:configure XQuartz for windowed mode if layer3 or less
-[[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer <= 3 )) ; then
+if [[ "$(uname -s)" == "Darwin" ]] && (( gl_layer <= 3 )) ; then
 #[of]:  configure options for windowed mode
   #XQuartz windowed
   defaults write org.macosforge.xquartz.X11 "app_to_run" "/bin/true"
@@ -80,11 +85,8 @@ fi
 #[cf]
 #[of]:build through to layer 4 - the desktop manager
 if (( gl_layer >= 4 )) ; then
-  cd layer4-desktop
-  fn_buildLayer 4
-  cd ${lc_path}
 #[of]:  configure XQuartz for fullscreen mode if layer4
-  [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer == 4 )) ; then
+  if [[ "$(uname -s)" == "Darwin" ]] && (( gl_layer == 4 )) ; then
 #[of]:    configure options for fullscreen
   #XQuartz fullscreen with desktop manager
   defaults write org.macosforge.xquartz.X11 "app_to_run" "/bin/true"
