@@ -1,17 +1,23 @@
 #!/bin/bash
 
+#[of]:to-do
+#[c]build top env on desired layer 2-+
+#[c]  populate user home dir if not populated
+#[c]add option to restart x without restarting the container
+#[cf]
 #[of]:functions
-
+#[of]:function layer_exist {
 function layer_exist {
   docker images -q $(imageBaseName $1) | grep -q .
 }
-
+#[cf]
+#[of]:function imageBaseName {
 function imageBaseName {
   echo "tspoolst/docker-ubuntu-icewm:layer${1}-0.2.0"
 }
-
+#[cf]
+#[of]:function setup_layer {
 function setup_layer {
-
   typeset lc_layer
   lc_layer=$1
 
@@ -33,8 +39,9 @@ function setup_layer {
   fi
 }
 #[cf]
+#[cf]
 
-#set -x
+set -x
 
 #[of]:setup vars
 gl_basepath=$(cd ${0%/*};pwd)
@@ -136,7 +143,7 @@ docker run \
 #[cf]
 #[of]:if layer3 or higher handle XQuartz restart
 [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer >= 3 )) ; then
-#[of]:  force restart XQuartz
+#[of]:  force restart XQuartz session
   killall Xquartz
   open /Applications/Utilities/XQuartz.app
 #[cf]

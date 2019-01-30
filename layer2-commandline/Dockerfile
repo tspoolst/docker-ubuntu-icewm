@@ -13,12 +13,14 @@ ENV TERM linux
 RUN apt-get update && \
   apt-get install -y -q \
     sudo dialog apt-file man bzip2 zip unzip whois \
-    bash-completion ncdu htop tree \
+    bash-completion ncdu htop tree screen \
+    openssh-server \
     vim mc lftp links lynx \
     iputils-ping openssh-client \
-    nmap tcpdump iftop \
+    nmap tcpdump iftop jnettop \
     docker.io \
-    make gcc ruby ruby-dev python-pip \
+    make gcc \
+    ruby ruby-dev python-pip jq \
     software-properties-common && \
   apt-get clean && \
   rm -rf /tmp/* /var/tmp/* && \
@@ -37,6 +39,7 @@ RUN apt-add-repository ppa:ansible/ansible && \
 RUN wget -q https://releases.hashicorp.com/vagrant/2.1.5/vagrant_2.1.5_x86_64.deb && \
   dpkg -i vagrant_2.1.5_x86_64.deb && \
   rm -f vagrant_2.1.5_x86_64.deb && \
+  vagrant plugin install vagrant-scp && \
   vagrant plugin install pry-byebug
 #[cf]
 
