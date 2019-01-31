@@ -13,7 +13,7 @@ ENV TERM linux
 RUN apt-get update && \
   apt-get install -y -q \
     icewm icewm-themes \
-    fbpanel && \
+    fbpanel \
     xrdp && \
   apt-get clean && \
   rm -rf /tmp/* /var/tmp/* && \

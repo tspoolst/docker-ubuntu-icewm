@@ -153,7 +153,7 @@ docker run \
 fi
 #[cf]
 #[of]:exec into workbench bash shell
-docker exec -ti workbench /bin/bash -l
+docker exec -ti workbench screen bash -l
 #[cf]
 #[cf]
 # vim:number:tabstop=2:shiftwidth=2:autoindent:foldmethod=marker:foldlevel=0:foldmarker=#[of],#[cf]
