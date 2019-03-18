@@ -1,11 +1,11 @@
 #name of container: workbench
 #name of image: workbench-layer4
-#versison of image: 0.2.0
+#versison of image: v0.4.0
 
-#docker build -t workbench-layer4:0.2.0 .
+#docker build -t workbench-layer4:v0.4.0 .
 
-FROM tspoolst/docker-ubuntu-icewm:layer3-0.2.0
-#FROM workbench-layer3:0.2.0
+FROM tspoolst/docker-ubuntu-icewm:layer3-v0.4.0
+#FROM workbench-layer3:v0.4.0
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
 ENV TERM linux

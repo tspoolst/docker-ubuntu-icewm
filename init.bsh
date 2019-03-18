@@ -13,7 +13,7 @@ function layer_exist {
 #[cf]
 #[of]:function imageBaseName {
 function imageBaseName {
-  echo "tspoolst/docker-ubuntu-icewm:layer${1}-0.2.0"
+  echo "tspoolst/docker-ubuntu-icewm:layer${1}-v0.4.0"
 }
 #[cf]
 #[of]:function setup_layer {
@@ -139,7 +139,7 @@ docker run \
   -l workbench \
   -h workbench \
   --privileged \
-  tspoolst/docker-ubuntu-icewm:layer${gl_layer}-0.2.0
+  tspoolst/docker-ubuntu-icewm:layer${gl_layer}-v0.4.0
 #[cf]
 #[of]:if layer3 or higher handle XQuartz restart
 [[ "$(uname -s)" == "Darwin" ]] && if (( gl_layer >= 3 )) ; then

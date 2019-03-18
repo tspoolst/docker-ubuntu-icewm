@@ -1,11 +1,11 @@
 #name of container: workbench
 #name of image: workbench-layer3
-#versison of image: 0.2.0
+#versison of image: v0.4.0
 
-#docker build -t workbench-layer3:0.2.0 .
+#docker build -t workbench-layer3:v0.4.0 .
 
-FROM tspoolst/docker-ubuntu-icewm:layer2-0.2.0
-#FROM workbench-layer2:0.2.0
+FROM tspoolst/docker-ubuntu-icewm:layer2-v0.4.0
+#FROM workbench-layer2:v0.4.0
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
 ENV TERM linux
@@ -25,7 +25,9 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
   echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list
 #[cf]
 
-RUN apt-get update && \
+RUN dpkg --add-architecture i386 && \
+  apt-get update && \
+  apt-get install -y -q libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 && \
   apt-get install -y -q \
     xpra \
     rox-filer \
@@ -36,11 +38,11 @@ RUN apt-get update && \
   rm -rf /tmp/* /var/tmp/* && \
   rm -rf /var/lib/apt/lists/*
 
-COPY packages-xapps.tar.bz2 /
-RUN tar jxvf /packages-xapps.tar.bz2 -C /
-RUN rm -f /packages-xapps.tar.bz2
+COPY code-browser-2.18-pkg.tar.bz2 /
+RUN tar jxvf /code-browser-2.18-pkg.tar.bz2 -C /
+RUN rm -f /code-browser-2.18-pkg.tar.bz2
 RUN cd /packages && \
-  ./linkit docker-code-browser-2.18
+  ./linkit code-browser-2.18
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]

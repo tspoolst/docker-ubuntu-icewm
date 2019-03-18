@@ -1,11 +1,11 @@
 #name of container: workbench
 #name of image: workbench-layer2
-#versison of image: 0.2.0
+#versison of image: v0.4.0
 
-#docker build -t workbench-layer2:0.2.0 .
+#docker build -t workbench-layer2:v0.4.0 .
 
-FROM tspoolst/docker-ubuntu-icewm:layer1-0.2.0
-#FROM workbench-layer1:0.2.0
+FROM tspoolst/docker-ubuntu-icewm:layer1-v0.4.0
+#FROM workbench-layer1:v0.4.0
 MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
 
 ENV TERM linux
@@ -13,7 +13,7 @@ ENV TERM linux
 RUN apt-get update && \
   apt-get install -y -q \
     sudo dialog apt-file man bzip2 zip unzip whois \
-    bash-completion ncdu htop tree screen \
+    bash-completion ncdu htop tree screen lsof \
     openssh-server \
     vim mc lftp links lynx \
     iputils-ping openssh-client \
