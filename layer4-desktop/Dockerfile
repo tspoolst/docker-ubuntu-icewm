@@ -1,21 +1,21 @@
 #name of container: workbench
 #name of image: workbench-layer4
-#versison of image: v0.4.0
+#version of image: v0.4.0
 
 #docker build -t workbench-layer4:v0.4.0 .
 
 FROM tspoolst/docker-ubuntu-icewm:layer3-v0.4.0
 #FROM workbench-layer3:v0.4.0
-MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
+MAINTAINER Trent Spoolstra  "tspoolst@gmail.com"
 
 ENV TERM linux
 
-RUN apt-get update && \
-  apt-get install -y -q \
+RUN apt-get update
+RUN apt-get install -y -q \
     icewm icewm-themes \
     fbpanel \
-    xrdp && \
-  apt-get clean && \
+    xrdp
+RUN apt-get clean && \
   rm -rf /tmp/* /var/tmp/* && \
   rm -rf /var/lib/apt/lists/*
 

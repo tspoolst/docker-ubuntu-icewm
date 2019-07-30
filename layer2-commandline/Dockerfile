@@ -1,18 +1,18 @@
 #name of container: workbench
 #name of image: workbench-layer2
-#versison of image: v0.4.0
+#version of image: v0.4.0
 
 #docker build -t workbench-layer2:v0.4.0 .
 
 FROM tspoolst/docker-ubuntu-icewm:layer1-v0.4.0
 #FROM workbench-layer1:v0.4.0
-MAINTAINER Trent Spoolsta  "tspoolst@gmail.com"
+MAINTAINER Trent Spoolstra  "tspoolst@gmail.com"
 
 ENV TERM linux
 
 RUN apt-get update && \
   apt-get install -y -q \
-    sudo dialog apt-file man bzip2 zip unzip whois \
+    sudo dialog apt-file dmidecode man bzip2 zip unzip whois \
     bash-completion ncdu htop tree screen lsof \
     openssh-server \
     vim mc lftp links lynx \

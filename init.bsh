@@ -107,21 +107,39 @@ if (( gl_layer >= 4 )) ; then
 #[cf]
 #[of]:    add XQuartz desktop manager startup scripts
   mkdir -p ~/.xinitrc.d
-  cp -af 99-wm.sh ~/.xinitrc.d/99-wm.sh
+  { echo "#!/bin/bash"
+    echo
+    set | grep ^DOCKER | (while read i;do echo "export ${i}";done)
+    echo
+    cat 99-wm.sh
+  } > ~/.xinitrc.d/99-wm.sh
   chmod 755 ~/.xinitrc.d/99-wm.sh
 #[cf]
   fi
 #[cf]
 fi
 #[cf]
+#[of]:set client DISPLAY
+gl_dmidecode="docker run --privileged --rm tspoolst/docker-ubuntu-icewm:layer2-v0.4.0 dmidecode"
 
-if [[ "$(uname -s)" == "Darwin" ]] ; then
-  _options[${#_options[@]}]="-e DISPLAY=docker.for.mac.localhost:0"
+if ${gl_dmidecode} 2>&1 | grep -q "vboxVer_.*" ; then
+  echo "we are running in docker-toolbox" >&2
+  _options[${#_options[@]}]="-e DISPLAY=10.0.2.2:0"
+elif ${gl_dmidecode} 2>&1 | grep -q "BHYVE" ; then
+  echo "we are running in docker-desktop" >&2
+  if [[ "$(uname -s)" == "Darwin" ]] ; then
+    echo "our host os is mac" >&2
+    _options[${#_options[@]}]="-e DISPLAY=docker.for.mac.localhost:0"
+  else
+    echo "our host os is ??.  not handled yet." >&2
+    exit 1
+  fi
 else
+  echo "our host os is linux?" >&2
   _options[${#_options[@]}]="-v /tmp/.X11-unix:/tmp/.X11-unix"
   _options[${#_options[@]}]="-e DISPLAY=:0"
 fi
-
+#[cf]
 #[of]:recreate workbench container
 docker ps -a | tail -n +2 | grep -q workbench && {
   docker stop workbench
