@@ -1,0 +1,2 @@
+#! /bin/sh
+exec mplayer -stop-xscreensaver -framedrop -vo xv -vf scale=440:-2 -ssf lgb=.9 "$@"

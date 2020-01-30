@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[[ ! -e /var/run/sshd ]] && mkdir -p /var/run/sshd
+for i in rsa dsa ecdsa ed25519;do [[ ! -e /etc/ssh/ssh_host_${i}_key ]] && yes | ssh-keygen -q -t ${i} -f /etc/ssh/ssh_host_${i}_key -N "" -C "" > /dev/null 2>&1;done
+exec /usr/sbin/sshd -D

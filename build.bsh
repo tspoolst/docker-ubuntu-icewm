@@ -1,0 +1,318 @@
+#!/usr/bin/env bash
+#[of]:todo
+# does user request local build?
+# if image ver does not exist in local repo pull/build it.
+# if lower dependency does not exist pull/build it.
+#
+# how do we select the version to build if the pull fails
+
+#[cf]
+#[of]:functions
+#[of]:base
+[[ -n "$BASH_VERSION" ]] && shopt -s extglob
+#[of]:function die {
+function die {
+#[of]:  usage
+  if false ; then
+    echo 'Usage: die exitcode "message"'
+    echo "Error: none"
+    echo "Description: outputs messages to stderr and exits with exitcode"
+    echo "  a quick way to kill a script"
+    echo "Examples:"
+    echo '  die 1 "this bit of code failed to do something"'
+    echo "Returns:"
+    echo "  1 or given exitcode"
+    exit 1
+  fi
+#[cf]
+  typeset lc_die_return lc_die_message
+  if isnum "${1}" ; then
+    lc_die_return=$1
+    shift
+  fi
+  lc_die_message="$1"
+  echo "${lc_die_message:-no reason was given}" >&2
+  exit ${lc_die_return:-1}
+}
+#[cf]
+#[of]:function isnum {
+function isnum {
+  #set IFS to a sane value
+  typeset IFS
+	IFS='
+'
+  if [[ "$1" == ?(+|-)+([0-9]) ]] ; then
+   return 0
+  fi
+  return 1
+}
+#[cf]
+#[of]:function cleancat {
+function cleancat {
+#[of]:  usage
+  if [ $# -gt 1 ] ; then
+    echo "Usage: cleancat [filename]|[redirect]"
+    echo "Error: must have 0 or 1 argument"
+    echo "Description: dumps a file or pipe removing blank lines and comments"
+    echo "Examples:"
+    echo '  cleancat ${lc_main_filename}'
+    echo '  bigdataapp | cleancat'
+    echo '  cleancat < echo "A Test String"'
+    echo "Returns:"
+    echo "  0 success"
+    exit 1
+  fi
+#[cf]
+  if [[ -n "$1" ]] ; then
+    [[ ! -r "$1" ]] && die 1 "could not read file $1"
+    grep -v -e "^[[:blank:]]*$" -e "^[[:blank:]]*#" "$1" 2>/dev/null
+  else
+    grep -v -e "^[[:blank:]]*$" -e "^[[:blank:]]*#" 2>/dev/null
+  fi
+}
+#[cf]
+#[of]:function askyn {
+function askyn {
+  typeset lc_askyn_bool
+  while [[ ! "${lc_askyn_bool}" =~ [yn] ]] ; do
+    read -n 1 -s -p "$1? [y/n] " lc_askyn_bool
+    echo "${lc_askyn_bool}"
+  done
+  [[ "${lc_askyn_bool}" == "y" ]] && return 0 || return 1
+}
+#[cf]
+#[cf]
+#[of]:function layer_exist {
+function layer_exist {
+  docker images -q $(imageBaseName $1) | grep -q .
+}
+#[cf]
+#[of]:function imageBaseName {
+function imageBaseName {
+  typeset lc_runlevel
+  lc_runlevel="$1"
+  echo "${gl_repoURL}/build-env_${gl_distroList[${gl_distroID}]}_${lc_runlevel}:${gl_version}"
+}
+#[cf]
+#[of]:function build_layers {
+function build_layers {
+  typeset lc_libDir lc_services
+  lc_libDir=./dockerfiles
+  #lc_services="-Dsession_sshd -Dsession_crond"
+  for lc_runlevel in base ${gl_runlevelList[@]::$((${gl_runlevelID}+1))} ; do
+    m4 -E \
+      -DDOCKER_REPO=${gl_repoURL} \
+      -DWORKBENCH_VERSION=${gl_version} \
+      -DWORKBENCH_MAJORVER=${gl_majorver} \
+      -DDISTRO=${gl_distroList[${gl_distroID}]%%-*} \
+      -DDISTRO_VER=${gl_distroList[${gl_distroID}]##*-} \
+      -DRUNLEVEL=${lc_runlevel} \
+      ${lc_services} \
+      -I${lc_libDir} \
+      ${lc_libDir}/build-env_${lc_runlevel}.m4 > Dockerfile || die "Dockerfile compile failed"
+    docker build -t $(imageBaseName ${lc_runlevel}) . || die "docker image build failed"
+  done
+# Makefile sample code
+# build_fullver = $(git describe --tags)
+# build_ver = $(patsubst v%,%, $(or $(and $(word 2,$(subst -, ,$(build_fullver))),$(firstword $(subst -, ,$(build_fullver)))-dev), $(build_fullver)))
+}
+#[cf]
+#[of]:function displayMenu {
+function displayMenu {
+  typeset lc_tens lc_ones lc_action lc_message lc_menuList lc_fieldSize lc_selection lc_returnVar
+  lc_message="$1"
+  eval "lc_menuList=( \"\${$2[@]}\" )"
+  lc_fieldSize=$((${#lc_menuList[@]}-1));lc_fieldSize=${#lc_fieldSize}
+  lc_returnVar="$3"
+
+  while : ; do
+    echo "${lc_message}"
+    echo "-------------------------------"
+    eval "for ((i=0;i<\${#lc_menuList[@]};i++)) ; do
+        printf \"  %0${lc_fieldSize}d  %s\n\" \"\${i}\" \"\${lc_menuList[\${i}]}\"
+      done"
+    echo "-------------------------------"
+    read -n 1 -p "make a selection or q to quit: " lc_selection
+    [[ "${lc_selection}" == "q" ]] && { echo;echo;die 0 "nothing done.....quitting"; }
+    if [[ ${lc_fieldSize} == 2 ]] ; then
+      read -n 1 lc_ones
+      lc_selection="${lc_selection#0}${lc_ones}"
+    fi
+    echo
+    isnum "${lc_selection}" && [[ ${lc_selection} -lt ${#lc_menuList[@]} ]] && break
+    echo "not a valid menu selection - retrying"
+    sleep 1
+  done
+  eval "${lc_returnVar}=\"\${lc_selection}\""
+}
+#[cf]
+#[cf]
+#[of]:setup vars
+gl_buildFlag=false
+[[ "${0##*/}" == "build.bsh" ]] && gl_buildFlag=true
+
+unset gl_containerOptions gl_imageName
+
+gl_version=$(git describe --tags)
+gl_version="${gl_version#v}"
+[[ -n "${gl_version}" && -z "${gl_version##*-*}" ]] && glversion="${gl_version%%-*}-dev"
+gl_majorver="${gl_version%%.*}"
+
+gl_basepath=$(cd ${0%/*};pwd)
+gl_buildflag="false"
+
+gl_repoURL="tspoolst"
+
+gl_distroList=( $(cleancat distros.txt) )
+gl_runlevelList=( cmdline gui desktop )
+gl_containerTypeList=( independent dockeraccess passthrough )
+gl_containerServices=( cron ssh )
+
+gl_containerName="dc"
+#[cf]
+#[of]:main
+#[of]:parse command line
+gl_distroID="$1"
+gl_runlevelID="$2"
+isnum "${gl_distroID}" || displayMenu "select distro" gl_distroList gl_distroID
+isnum "${gl_runlevelID}" || displayMenu "select runlevel" gl_runlevelList gl_runlevelID
+if ! ${gl_buildFlag} ; then
+  gl_containerTypeID="$3"
+  isnum "${gl_containerTypeID}" || displayMenu "select runlevel" gl_containerTypeList gl_containerTypeID
+#[c]  gl_containerSsh="$4"
+#[c]  isnum "${gl_containerSsh}" || askyn "enable ssh service?" ; then
+#[c]  fi
+#[c]  gl_containerCron="$5"
+#[c]  isnum "${gl_containerCron}" || askyn "enable cron service?" ; then
+#[c]  fi
+fi
+
+#[cf]
+#[of]:build layers as needed
+if ${gl_buildFlag} ; then
+  build_layers
+  exit
+fi
+layer_exist ${gl_runlevelList[${gl_runlevelID}]} || build_layers
+#[cf]
+#[of]:run container
+if [[ "${gl_containerTypeList[${gl_containerTypeID}]}" == "passthrough" ]] ; then
+  USER_UID="$(id -u)"
+  USER_GID="$(id -g)"
+  USER_UNAME="$(id -un)"
+  USER_GNAME="$(id -gn)"
+  USER_HOME="${HOME}"
+  gl_containerOptions[${#gl_containerOptions[@]}]="-v ${HOME}:${HOME}/hosthome"
+  gl_containerOptions[${#gl_containerOptions[@]}]="-v ${HOME}/git:${HOME}/git"
+  gl_containerOptions[${#gl_containerOptions[@]}]="-v ${HOME}/.ssh:${HOME}/.ssh"
+  gl_containerOptions[${#gl_containerOptions[@]}]="-v /Users/Shared/ansible-files:/Users/Shared/ansible-files"
+elif [[ "${gl_containerTypeList[${gl_containerTypeID}]}" =~ (dockeraccess|independent) ]] ; then
+  USER_UID="1000"
+  USER_GID="1000"
+  USER_UNAME="builder"
+  USER_GNAME="builder"
+  USER_HOME="/home/builder"
+fi
+if [[ "${gl_containerTypeList[${gl_containerTypeID}]}" =~ (passthrough|dockeraccess) ]] ; then
+  gl_containerOptions[${#gl_containerOptions[@]}]="-v /var/run/docker.sock:/var/run/docker.sock"
+  gl_containerOptions[${#gl_containerOptions[@]}]="--privileged"
+fi
+cd ${gl_basepath}
+#[of]:configure XQuartz for windowed mode if runlevel2 or less
+if [[ "$(uname -s)" == "Darwin" ]] && (( gl_runlevelID <= 1 )) ; then
+#[of]:  configure options for windowed mode
+  #XQuartz windowed
+  defaults write org.macosforge.xquartz.X11 "app_to_run" "/bin/true"
+  defaults write org.macosforge.xquartz.X11 rootless -int 1
+  defaults write org.macosforge.xquartz.X11 "fullscreen_menu" -int 1
+  defaults write org.macosforge.xquartz.X11 "nolisten_tcp" -int 0
+  defaults write org.macosforge.xquartz.X11 "option_sends_alt" -int 1
+  defaults write org.macosforge.xquartz.X11 "sync_pasteboard" -int 0
+  defaults write org.macosforge.xquartz.X11 "wm_click_through" -int 0
+  defaults write org.macosforge.xquartz.X11 "wm_ffm" -int 0
+#[cf]
+#[of]:  remove desktop manager startup scripts
+  rm -f ~/.xinitrc.d/99-wm.sh
+#[cf]
+fi
+#[cf]
+#[of]:build through to runlevel2 - the desktop manager
+if (( gl_runlevelID >= 2 )) ; then
+#[of]:  configure XQuartz for fullscreen mode if layer2
+  if [[ "$(uname -s)" == "Darwin" ]] && (( gl_runlevelID == 2 )) ; then
+#[of]:    configure options for fullscreen
+    #XQuartz fullscreen with desktop manager
+    defaults write org.macosforge.xquartz.X11 "app_to_run" "/bin/true"
+    defaults write org.macosforge.xquartz.X11 rootless -int 0
+    defaults write org.macosforge.xquartz.X11 "fullscreen_menu" -int 0
+    defaults write org.macosforge.xquartz.X11 "nolisten_tcp" -int 0
+    defaults write org.macosforge.xquartz.X11 "option_sends_alt" -int 1
+    defaults write org.macosforge.xquartz.X11 "sync_pasteboard" -int 0
+    defaults write org.macosforge.xquartz.X11 "wm_click_through" -int 0
+    defaults write org.macosforge.xquartz.X11 "wm_ffm" -int 0
+#[cf]
+#[of]:    add XQuartz desktop manager startup scripts
+    mkdir -p ~/.xinitrc.d
+    eval "cleancat << EOF > ~/.xinitrc.d/99-wm.sh
+$(cat 99-wm.sh)
+EOF"
+    chmod 755 ~/.xinitrc.d/99-wm.sh
+#[cf]
+  fi
+#[cf]
+fi
+#[cf]
+#[of]:recreate workbench container
+docker ps -a | tail -n +2 | grep -q ${gl_containerName} && {
+  docker stop ${gl_containerName}
+  docker rm ${gl_containerName}
+}
+
+if [[ "${gl_containerTypeList[${gl_containerTypeID}]}" == "passthrough" ]] ; then
+  mkdir -p ${HOME}/.vagrant.d/boxes ${HOME}/.vagrant.d/tmp ${HOME}/.terraform
+elif [[ "${gl_containerTypeList[${gl_containerTypeID}]}" == "independent" ]] ; then
+  :
+fi
+echo "running from image $(imageBaseName ${gl_runlevelList[${gl_runlevelID}]})"
+docker run \
+  -e DISPLAY=host.docker.internal:0 \
+  -e VBOXHOST=host.docker.internal \
+  -d \
+  --restart always \
+  ${gl_containerOptions[@]} \
+  --net host \
+  --name ${gl_containerName} \
+  -l ${gl_containerName} \
+  -h ${gl_containerName} \
+  $(imageBaseName ${gl_runlevelList[${gl_runlevelID}]})
+
+docker exec -ti ${gl_containerName} /add_user.bsh "${USER_UID}" "${USER_GID}" "${USER_UNAME}" "${USER_GNAME}" "${USER_HOME}"
+#[c]docker cp os/my_init-ssh/* dc:/
+#[c]docker cp os/my_init-cron/* dc:/
+
+#docker logs ${gl_containerName}
+#[cf]
+#[of]:if runlevel1 or higher handle XQuartz restart
+[[ "$(uname -s)" == "Darwin" ]] && if (( gl_runlevelID >= 1 )) ; then
+#[of]:  force restart XQuartz session
+  killall Xquartz
+  open /Applications/Utilities/XQuartz.app
+#[cf]
+#[of]:  add perms to run local x apps via tcp socket
+  xhost + localhost
+#[cf]
+fi
+#[cf]
+#[of]:exec into ${gl_containerName} bash shell
+# docker exec -ti ${gl_containerName} screen bash -l
+
+docker exec -ti ${gl_containerName} sudo -i -u "${USER_UNAME}"
+#docker exec -ti ${gl_containerName} sudo -i -u $(id -un)
+docker ps -a | tail -n +2 | grep -q ${gl_containerName} && {
+  docker stop ${gl_containerName}
+  docker rm ${gl_containerName}
+}
+#[cf]
+#[cf]
+#[cf]
+# vim:number:tabstop=2:shiftwidth=2:autoindent:foldmethod=marker:foldlevel=0:foldmarker=#[of],#[cf]

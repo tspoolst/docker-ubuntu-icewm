@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rox /avfs/${1#/avfs}#/

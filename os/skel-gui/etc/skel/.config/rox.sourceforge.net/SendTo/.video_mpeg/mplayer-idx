@@ -1,0 +1,4 @@
+#!/bin/bash
+
+[[ -z "${1%%*.vob}" ]] && v_vob="-aid 128"
+exec mplayer -forceidx -vo xv ${v_vob} "$@"

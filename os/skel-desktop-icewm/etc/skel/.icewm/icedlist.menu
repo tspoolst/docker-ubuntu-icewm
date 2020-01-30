@@ -1,0 +1,8 @@
+#dlist-1.0.0
+#options
+menuprog "settings" app dlist displaysettingsmenu
+prog "add group" app dlist addgroup "" prompt
+prog "edit group" app bash -l -c 'exec nedit "${ICEWM_PRIVCFG:-${HOME}/.icewm}/icedlist.menu"'
+separator
+menuprog "/" folder dlist base "/" ""
+menuprog "/home" folder dlist base "/home" ""

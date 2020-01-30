@@ -1,0 +1,2 @@
+#! /bin/sh
+exec aoss mplayer -osdlevel 0 -stop-xscreensaver -vo xv -fs -loop 0 "$@"

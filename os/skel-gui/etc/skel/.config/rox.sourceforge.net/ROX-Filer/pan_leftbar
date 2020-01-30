@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<panel side="Left">
+  <options style="1" width="32" avoid="1" xinerama="0" monitor="0"/>
+  <start>
+    <icon label="nedit">/usr/bin/nedit</icon>
+    <icon label="code-browser">/usr/bin/code-browser</icon>
+    <icon label="home">~</icon>
+  </start>
+  <end/>
+</panel>

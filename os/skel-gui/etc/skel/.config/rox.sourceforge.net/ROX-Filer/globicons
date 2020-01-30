@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<special-files>
+  <rule match="/root/gta3">
+    <icon>/usr/local/share/Choices/MIME-icons/application_x-java.png</icon>
+  </rule>
+  <rule match="/usr/bin/code-browser">
+    <icon>/usr/share/icewm/icons/cube_32x32.xpm</icon>
+  </rule>
+  <rule match="/usr/bin/dvdrip">
+    <icon>/usr/share/Choices/MIME-icons/video_mpeg.png</icon>
+  </rule>
+  <rule match="/usr/bin/quake">
+    <icon>/usr/local/share/Choices/MIME-icons/inode_core.png</icon>
+  </rule>
+  <rule match="/usr/bin/nedit">
+    <icon>/usr/share/icewm/icons/nedit_32x32.xpm</icon>
+  </rule>
+  <rule match="/root/playdvd">
+    <icon>/usr/share/Choices/MIME-icons/video_mpeg.png</icon>
+  </rule>
+  <rule match="/root/winebrain">
+    <icon>/usr/local/share/Choices/MIME-icons/application_x-sharedlib.png</icon>
+  </rule>
+  <rule match="/root/iss/isspagegen">
+    <icon>/usr/local/share/Choices/MIME-icons/text_x-csrc.png</icon>
+  </rule>
+</special-files>

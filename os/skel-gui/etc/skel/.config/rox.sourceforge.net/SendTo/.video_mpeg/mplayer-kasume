@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export DISPLAY=kasume:0
+exec mplayer -vo xv "$@"

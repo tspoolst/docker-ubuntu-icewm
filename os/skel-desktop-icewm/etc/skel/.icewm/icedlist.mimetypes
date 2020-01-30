@@ -1,0 +1,164 @@
+mimeext__count=43
+mimeext__data_669=audio/anything
+mimeext__data_asf=video/anything
+mimeext__data_asm=text/plain
+mimeext__data_avi=video/anything
+mimeext__data_bmp=image/anything
+mimeext__data_bsh=text/plain
+mimeext__data_far=audio/anything
+mimeext__data_gif=image/anything
+mimeext__data_htm=text/html
+mimeext__data_html=text/html
+mimeext__data_inc=text/plain
+mimeext__data_it=audio/anything
+mimeext__data_jpeg=image/anything
+mimeext__data_jpg=image/anything
+mimeext__data_m3u=audio/anything
+mimeext__data_mod=audio/anything
+mimeext__data_mov=video/anything
+mimeext__data_mp3=audio/anything
+mimeext__data_mpe=video/anything
+mimeext__data_mpeg=video/anything
+mimeext__data_mpg=video/anything
+mimeext__data_mtm=audio/anything
+mimeext__data_ogg=audio/anything
+mimeext__data_pas=text/plain
+mimeext__data_pdf=text/pdf
+mimeext__data_pls=audio/anything
+mimeext__data_png=image/anything
+mimeext__data_qt=video/anything
+mimeext__data_ram=video/anything
+mimeext__data_rip=video/dvdrip
+mimeext__data_rm=video/anything
+mimeext__data_s3m=audio/anything
+mimeext__data_sclass=text/plain
+mimeext__data_sh=text/plain
+mimeext__data_stm=audio/anything
+mimeext__data_tga=image/anything
+mimeext__data_tif=image/anything
+mimeext__data_txt=text/plain
+mimeext__data_vob=video/vob
+mimeext__data_wav=audio/anything
+mimeext__data_wmv=video/anything
+mimeext__data_xm=audio/anything
+mimeext__data_xpm=image/anything
+mimeext__first=avi
+mimeext__last=it
+mimeext__meta_669=([0]="669" [1]="mtm" [2]="far")
+mimeext__meta_asf=([0]="asf" [1]="vob" [2]="wmv")
+mimeext__meta_asm=([0]="asm" [1]="xpm" [2]="pas")
+mimeext__meta_avi=([0]="avi" [2]="bsh")
+mimeext__meta_bmp=([0]="bmp" [1]="mp3" [2]="pdf")
+mimeext__meta_bsh=([0]="bsh" [1]="avi" [2]="jpeg")
+mimeext__meta_far=([0]="far" [1]="669" [2]="stm")
+mimeext__meta_gif=([0]="gif" [1]="jpg" [2]="mpg")
+mimeext__meta_htm=([0]="htm" [1]="html" [2]="xm")
+mimeext__meta_html=([0]="html" [1]="wav" [2]="htm")
+mimeext__meta_inc=([0]="inc" [1]="pls" [2]="ogg")
+mimeext__meta_it=([0]="it" [1]="stm")
+mimeext__meta_jpeg=([0]="jpeg" [1]="bsh" [2]="jpg")
+mimeext__meta_jpg=([0]="jpg" [1]="jpeg" [2]="gif")
+mimeext__meta_m3u=([0]="m3u" [1]="txt" [2]="mp3")
+mimeext__meta_mod=([0]="mod" [1]="s3m" [2]="mtm")
+mimeext__meta_mov=([0]="mov" [1]="pdf" [2]="mpeg")
+mimeext__meta_mp3=([0]="mp3" [1]="m3u" [2]="bmp")
+mimeext__meta_mpe=([0]="mpe" [1]="wmv" [2]="ram")
+mimeext__meta_mpeg=([0]="mpeg" [1]="mov" [2]="qt")
+mimeext__meta_mpg=([0]="mpg" [1]="gif" [2]="tga")
+mimeext__meta_mtm=([0]="mtm" [1]="mod" [2]="669")
+mimeext__meta_ogg=([0]="ogg" [1]="inc" [2]="wav")
+mimeext__meta_pas=([0]="pas" [1]="asm" [2]="txt")
+mimeext__meta_pdf=([0]="pdf" [1]="bmp" [2]="mov")
+mimeext__meta_pls=([0]="pls" [1]="rm" [2]="inc")
+mimeext__meta_png=([0]="png" [1]="tga" [2]="tif")
+mimeext__meta_qt=([0]="qt" [1]="mpeg" [2]="rip")
+mimeext__meta_ram=([0]="ram" [1]="mpe" [2]="rm")
+mimeext__meta_rip=([0]="rip" [1]="qt" [2]="sclass")
+mimeext__meta_rm=([0]="rm" [1]="ram" [2]="pls")
+mimeext__meta_s3m=([0]="s3m" [1]="xm" [2]="mod")
+mimeext__meta_sclass=([0]="sclass" [1]="rip" [2]="sh")
+mimeext__meta_sh=([0]="sh" [1]="sclass" [2]="vob")
+mimeext__meta_stm=([0]="stm" [1]="far" [2]="it")
+mimeext__meta_tga=([0]="tga" [1]="mpg" [2]="png")
+mimeext__meta_tif=([0]="tif" [1]="png" [2]="xpm")
+mimeext__meta_txt=([0]="txt" [1]="pas" [2]="m3u")
+mimeext__meta_vob=([0]="vob" [1]="sh" [2]="asf")
+mimeext__meta_wav=([0]="wav" [1]="ogg" [2]="html")
+mimeext__meta_wmv=([0]="wmv" [1]="asf" [2]="mpe")
+mimeext__meta_xm=([0]="xm" [1]="htm" [2]="s3m")
+mimeext__meta_xpm=([0]="xpm" [1]="tif" [2]="asm")
+mimetype__count=8
+mimetype__data_audio2Fanything=xmms
+mimetype__data_image2Fanything=gimv
+mimetype__data_text2Fhtml=communicator-browser
+mimetype__data_text2Fpdf=pdf
+mimetype__data_text2Fplain=nedit
+mimetype__data_video2Fanything=mplayer
+mimetype__data_video2Fdvdrip=disks
+mimetype__data_video2Fvob=mplayer
+mimetype__first=image2Fanything
+mimetype__last=text2Fhtml
+mimetype__meta_audio2Fanything=([0]="audio/anything" [1]="text2Fplain" [2]="text2Fpdf")
+mimetype__meta_image2Fanything=([0]="image/anything" [2]="video2Fanything")
+mimetype__meta_text2Fhtml=([0]="text/html" [1]="video2Fvob")
+mimetype__meta_text2Fpdf=([0]="text/pdf" [1]="audio2Fanything" [2]="video2Fdvdrip")
+mimetype__meta_text2Fplain=([0]="text/plain" [1]="video2Fanything" [2]="audio2Fanything")
+mimetype__meta_video2Fanything=([0]="video/anything" [1]="image2Fanything" [2]="text2Fplain")
+mimetype__meta_video2Fdvdrip=([0]="video/dvdrip" [1]="text2Fpdf" [2]="video2Fvob")
+mimetype__meta_video2Fvob=([0]="video/vob" [1]="video2Fdvdrip" [2]="text2Fhtml")
+mimetype_audio2Fanything_xaction__count=1
+mimetype_audio2Fanything_xaction__data_play='xmms "$@"'
+mimetype_audio2Fanything_xaction__first=play
+mimetype_audio2Fanything_xaction__last=play
+mimetype_audio2Fanything_xaction__meta_play=([0]="play")
+mimetype_image2Fanything_xaction__count=1
+mimetype_image2Fanything_xaction__data_view='gimv -d "${1%/*}"'
+mimetype_image2Fanything_xaction__first=view
+mimetype_image2Fanything_xaction__last=view
+mimetype_image2Fanything_xaction__meta_view=([0]="view")
+mimetype_text2Fhtml_xaction__count=1
+mimetype_text2Fhtml_xaction__data_view='bash -c "seamonkey -remote \\"openURL ($@, new-tab)\\" || seamonkey \\"$@\\""'
+mimetype_text2Fhtml_xaction__first=view
+mimetype_text2Fhtml_xaction__last=view
+mimetype_text2Fhtml_xaction__meta_view=([0]="view")
+mimetype_text2Fpdf_xaction__count=1
+mimetype_text2Fpdf_xaction__data_view='acroread "$@"'
+mimetype_text2Fpdf_xaction__first=view
+mimetype_text2Fpdf_xaction__last=view
+mimetype_text2Fpdf_xaction__meta_view=([0]="view")
+mimetype_text2Fplain_xaction__count=3
+mimetype_text2Fplain_xaction__data_atom='atom "$@"'
+mimetype_text2Fplain_xaction__data_code2Dedit='code-browser "$@"'
+mimetype_text2Fplain_xaction__data_edit='nedit "$@"'
+mimetype_text2Fplain_xaction__first=code2Dedit
+mimetype_text2Fplain_xaction__last=atom
+mimetype_text2Fplain_xaction__meta_atom=([0]="atom" [1]="edit")
+mimetype_text2Fplain_xaction__meta_code2Dedit=([0]="code-edit" [2]="edit")
+mimetype_text2Fplain_xaction__meta_edit=([0]="edit" [1]="code2Dedit" [2]="atom")
+mimetype_video2Fanything_xaction__count=5
+mimetype_video2Fanything_xaction__data_view='mplayer -really-quiet -stop-xscreensaver -vo xv "$@"'
+mimetype_video2Fanything_xaction__data_view2Dblur='mplayer -really-quiet -stop-xscreensaver -framedrop -vo xv -vf scale=440:-2 -ssf lgb=.9 "$@"'
+mimetype_video2Fanything_xaction__data_view2Didx='mplayer -really-quiet -stop-xscreensaver -vo xv -forceidx "$@"'
+mimetype_video2Fanything_xaction__data_view2Dloop='mplayer -really-quiet -stop-xscreensaver -osdlevel 0 -vo xv -fs -loop 0 "$@"'
+mimetype_video2Fanything_xaction__data_view2Dx11='mplayer -really-quiet -stop-xscreensaver -vo x11 "$@"'
+mimetype_video2Fanything_xaction__first=view
+mimetype_video2Fanything_xaction__last=view2Dx11
+mimetype_video2Fanything_xaction__meta_view=([0]="view" [2]="view2Dloop")
+mimetype_video2Fanything_xaction__meta_view2Dblur=([0]="view-blur" [1]="view2Dloop" [2]="view2Didx")
+mimetype_video2Fanything_xaction__meta_view2Didx=([0]="view-idx" [1]="view2Dblur" [2]="view2Dx11")
+mimetype_video2Fanything_xaction__meta_view2Dloop=([0]="view-loop" [1]="view" [2]="view2Dblur")
+mimetype_video2Fanything_xaction__meta_view2Dx11=([0]="view-x11" [1]="view2Didx")
+mimetype_video2Fdvdrip_xaction__count=1
+mimetype_video2Fdvdrip_xaction__data_open='dvdrip "$@"'
+mimetype_video2Fdvdrip_xaction__first=open
+mimetype_video2Fdvdrip_xaction__last=open
+mimetype_video2Fdvdrip_xaction__meta_open=([0]="open")
+mimetype_video2Fvob_xaction__count=3
+mimetype_video2Fvob_xaction__data_listen2Dstacked='urxvt -e bash -login -c '\''exec mplayer -vo null -af volnorm,volume=10 "${1%%-00*}-"*.vob'\'''
+mimetype_video2Fvob_xaction__data_view='mplayer -really-quiet -stop-xscreensaver -vo xv -vf pullup -aid 128 -af volnorm,volume=10 "$@"'
+mimetype_video2Fvob_xaction__data_view2Dstacked='bash -c '\''exec mplayer -really-quiet -stop-xscreensaver -vo xv -vf pullup -aid 128 -af volnorm,volume=10 "${1%%-00*}-"*.vob'\'''
+mimetype_video2Fvob_xaction__first=view
+mimetype_video2Fvob_xaction__last=listen2Dstacked
+mimetype_video2Fvob_xaction__meta_listen2Dstacked=([0]="listen-stacked" [1]="view2Dstacked")
+mimetype_video2Fvob_xaction__meta_view=([0]="view" [2]="view2Dstacked")
+mimetype_video2Fvob_xaction__meta_view2Dstacked=([0]="view-stacked" [1]="view" [2]="listen2Dstacked")

@@ -1,0 +1,2 @@
+#! /bin/sh
+exec /root/.openoffice-1.1.0/soffice "$@"

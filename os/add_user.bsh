@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#set -xv
+
+[[ -z "$5" ]] && exit 1
+
+USER_UID="$1"
+USER_GID="$2"
+USER_UNAME="$3"
+USER_GNAME="$4"
+USER_HOME="$5"
+[[ -e /var/run/docker.sock ]] && gl_useDockerCLI="true" || gl_useDockerCLI="false"
+${gl_useDockerCLI} && DOCKER_GID=$(ls -l -n /var/run/docker.sock | awk '{print $4}')
+
+/update-repo-pointers.sh
+
+echo "${USER_UNAME}:x:${USER_UID}:${USER_GID}:${USER_UNAME},,,:${USER_HOME}:/bin/bash" >> /etc/passwd && \
+echo "${USER_UNAME}"':!!:18137::::::' >> /etc/shadow
+sed -e '/^[^:]\{1,\}:[^:]\{1,\}:'${USER_GID}':.*/d' -i /etc/group
+echo "${USER_GNAME}:x:${USER_GID}:" >> /etc/group
+echo "docker_env:x:8377:" >> /etc/group
+sed -e 's%\(docker_env:.*\)%\1'${USER_UNAME}'%' -i /etc/group
+${gl_useDockerCLI} && sed -e 's%\(docker:x:\).*%\1'${DOCKER_GID}:${USER_UNAME}'%' -i /etc/group
+
+echo "${USER_UNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER_UNAME} && \
+chmod 0440 /etc/sudoers.d/${USER_UNAME} && \
+
+[[ "${USER_HOME%/*}" != "/home" ]] && { rm -rf /home; ln -s ${USER_HOME%/*} /home; }
+
+mkdir -p ${USER_HOME} && \
+cp -a /etc/skel/{.[[:alnum:]]*,*} ${USER_HOME}/ &>/dev/null
+cd ${USER_HOME} || exit 1
+
+cp -a /root/.vagrant.d .
+
+[[ -d hosthome ]] && {
+#[c]  rm -rf .ssh/
+#[c]  ln -s hosthome/.ssh
+
+  mkdir -p hosthome/.vagrant.d/boxes hosthome/.vagrant.d/tmp
+  rm -rf .vagrant.d/boxes .vagrant.d/tmp
+  ln -s ../hosthome/.vagrant.d/boxes .vagrant.d/boxes
+  ln -s ../hosthome/.vagrant.d/tmp .vagrant.d/tmp
+}
+
+mkdir -p .terraform.d/plugins
+ln -s /terraform-plugins/linux_amd64 .terraform.d/plugins/
+
+[[ -d hosthome ]] && {
+  mkdir -p hosthome/.terraform
+  ln -s hosthome/.terraform
+}
+
+[[ -d hosthome/workbench/tf ]] && ln -s hosthome/workbench/tf
+[[ -d hosthome/workbench/go ]] && ln -s hosthome/workbench/go
+
+mkdir -p .local/share
+
+echo 'export PATH=$PATH:/usr/local/go/bin' >> .bash_profile
+echo 'export PATH=/usr/local/vbox-remote:$PATH' >> .bash_profile
+
+[[ -s hosthome/.gitconfig ]] && ln -sf hosthome/.gitconfig
+
+[[ -s hosthome/workbench/profile.sh ]] && . hosthome/workbench/profile.sh
+
+find ${USER_HOME} -xdev -type d -exec chown ${USER_UID}:${USER_GID} {} \; 2>/dev/null && \
+find ${USER_HOME} -xdev -type f -exec chown ${USER_UID}:${USER_GID} {} \; 2>/dev/null && \
+find ${USER_HOME} -xdev -type l -exec chown ${USER_UID}:${USER_GID} {} \; 2>/dev/null && \
+
+mkdir -p /Users/Shared
+
+[[ -d hosthome ]] && {
+  mkdir -p hosthome/VirtualBox\ VMs
+  ln -s hosthome/VirtualBox\ VMs
+}

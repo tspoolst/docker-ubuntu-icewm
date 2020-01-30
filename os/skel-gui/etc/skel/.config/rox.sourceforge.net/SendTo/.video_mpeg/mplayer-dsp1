@@ -1,0 +1,4 @@
+#!/bin/bash
+
+[[ -z "${1%%*.vob}" ]] && v_vob="-aid 128"
+exec mplayer -vo xv -ao oss:/dev/dsp1 -mixer /dev/mixer1 ${v_vob} "$@"

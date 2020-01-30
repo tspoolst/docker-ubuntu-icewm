@@ -1,0 +1,6 @@
+export HOSTNAME='workbench'
+export TERM='xterm'
+export LC_ALL='C'
+export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+export DISPLAY='host.docker.internal:0'
+export _='/usr/bin/env'

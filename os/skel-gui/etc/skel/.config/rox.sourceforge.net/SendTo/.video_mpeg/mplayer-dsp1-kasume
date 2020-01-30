@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export DISPLAY=kasume:0
+exec mplayer -vo xv -ao oss:/dev/dsp1 -mixer /dev/mixer1 "$@"

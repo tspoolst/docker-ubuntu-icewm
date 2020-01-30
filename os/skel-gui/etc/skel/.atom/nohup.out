@@ -1,0 +1,7 @@
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+bash: cannot set terminal process group (-1): Inappropriate ioctl for device
+bash: no job control in this shell
+mesg: ttyname failed: Inappropriate ioctl for device

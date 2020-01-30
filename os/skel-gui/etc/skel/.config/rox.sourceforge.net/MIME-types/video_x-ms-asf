@@ -1,0 +1,2 @@
+#! /bin/sh
+exec mplayer -stop-xscreensaver -vo xv -loop 0 "$@"

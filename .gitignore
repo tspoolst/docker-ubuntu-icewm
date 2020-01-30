@@ -1,0 +1,10 @@
+*.retry
+.vagrant
+*.pyc
+.*.sw?
+ansible/files
+*.chk
+*.box
+boxfile.json
+support_tools/
+#Dockerfile

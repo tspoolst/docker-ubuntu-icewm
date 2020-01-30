@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<pinboard>
+  <icon x="192" y="32" label="Home">~</icon>
+  <icon x="128" y="32" label="/">/</icon>
+</pinboard>

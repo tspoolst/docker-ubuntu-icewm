@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if which /usr/sbin/crond &>/dev/null ; then
+  exec /usr/sbin/crond -n
+else
+  exec /usr/sbin/cron -f
+fi

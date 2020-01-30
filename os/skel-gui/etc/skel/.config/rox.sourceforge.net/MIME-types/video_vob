@@ -1,0 +1,2 @@
+#! /bin/sh
+exec mplayer -stop-xscreensaver -aid 128 -vop detc -vo xv -framedrop "$@"

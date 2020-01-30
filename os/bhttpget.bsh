@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+#[of]:functions
+#[of]:base
+[[ -n "$BASH_VERSION" ]] && shopt -s extglob
+#[of]:function die {
+function die {
+#[of]:  usage
+  if false ; then
+    echo 'Usage: die exitcode "message"'
+    echo "Error: none"
+    echo "Description: outputs messages to stderr and exits with exitcode"
+    echo "  a quick way to kill a script"
+    echo "Examples:"
+    echo '  die 1 "this bit of code failed to do something"'
+    echo "Returns:"
+    echo "  1 or given exitcode"
+    exit 1
+  fi
+#[cf]
+  typeset lc_die_return lc_die_message
+  if isnum "${1}" ; then
+    lc_die_return=$1
+    shift
+  fi
+  lc_die_message="$1"
+  echo "${lc_die_message:-no reason was given}" >&2
+  exit ${lc_die_return:-1}
+}
+#[cf]
+#[of]:function isnum {
+function isnum {
+#[of]:  usage
+  if [[ "$#" != 1 ]] ; then
+    echo "Usage: isnum arg"
+    echo "Error: must have 1 argument"
+    echo "Description: checks if arg is a number"
+    echo "Examples:"
+    echo '  "if isnum 50 ; then'
+    echo '    echo is a number'
+    echo '  else'
+    echo '    echo is not a number'
+    echo '  fi"'
+    echo '  statement may also be negated'
+    echo '    "if ! isnum 50 ; then"'
+    echo "Returns:"
+    echo "  0 true"
+    echo "  1 false"
+    exit 1
+  fi
+#[cf]
+  #set IFS to a sane value
+  typeset IFS=$' \t\n'
+  if [[ "$1" == ?(+|-)+([0-9]) ]] ; then
+   return 0
+  fi
+  return 1
+}
+#[cf]
+#[cf]
+#[cf]
+#[of]:usage
+if [[ -z "${BASH_VERSINFO}" || "${BASH_VERSINFO[0]}" < 4 ]] ; then
+  die "must be running bash 4 or higher"
+fi
+if [[ "$#" < 1 ]] ; then
+  echo "Usage: $0 [http://]<src_host>[:<src_host_port>]/<src_file_path> [<dst_file>|-]"
+  echo "Error: must have at least 1 argument"
+  echo "Description: downloads a file from a http host"
+  echo "   if second arg is - then the download will be sent to stdout"
+  echo "Examples:"
+  echo "   $0 http://www.scriptvoodoo.org:80/pub/projects/shutils/shutils-0.0.0.tar.bz2"
+  echo "   $0 www.scriptvoodoo.org:80/pub/projects/shutils/shutils-0.0.0.tar.bz2 shutils-0.0.0.tar.bz2"
+  echo "   $0 www.scriptvoodoo.org/pub/projects/shutils/shutils-0.0.0.tar.bz2 ~/shutils.tar.bz2"
+  echo "Returns:"
+  echo "  0 success"
+  echo "  1 if host service does not connect or if 404 (file not found) is detected"
+  exit 1
+fi
+#[cf]
+#[of]:setup vars
+unset gl_protocol gl_port
+[[ -z "${1##*://*}" ]] && gl_protocol="${1%%://*}"
+gl_protocol="${gl_protocol:-http}"
+gl_url="${1##*://}"
+gl_host="${gl_url%%/*}"
+if [[ -z "${gl_host##*:*}" ]] ; then
+  gl_port="${gl_host##*:}"
+  gl_host="${gl_host%%:*}"
+fi
+gl_filesrc="${gl_url#*/}"
+gl_filedst="${2:-${gl_filesrc##*/}}"
+gl_httpget="$(echo -e "GET ${gl_protocol}://${gl_host}:${gl_port:-80}/${gl_filesrc}\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)\r\nHTTP/1.0\r\n\r\n")"
+#[cf]
+#[of]:main
+#[of]:check if http server is listening
+(echo > "/dev/tcp/${gl_host}/${gl_port:-80}") &>/dev/null || die "connection refused"
+#[cf]
+#[of]:GET http response header
+exec 3<>/dev/tcp/${gl_host}/${gl_port:-80}
+echo "${gl_httpget}" >&3
+IFS='' read -r -N 6 gl_header <&3
+exec 3<&- 3>&-
+#[cf]
+#[of]:GET file
+exec 3<>/dev/tcp/${gl_host}/${gl_port:-80}
+echo "${gl_httpget}" >&3
+if [[ "${gl_header%%/*}" == "HTTP" || "${gl_header}" == "<html>"  ]] ; then
+  while IFS=$'\n' read -r i ; do
+    if [[ -n "${i}" && -z "${i##*404 Not Found*}" ]] ; then
+      exec 3<&- 3>&-
+      die "404 Not Found"
+    fi
+    [[ "${i}" =~ ^$'\r'$ ]] && break
+  done <&3
+fi
+if [[ "${gl_filedst}" = "-" ]] ; then
+  cat <&3
+else
+  cat <&3 > "${gl_filedst}"
+fi
+exec 3<&- 3>&-
+#[cf]
+#[cf]
+# vim:number:tabstop=2:shiftwidth=2:autoindent:foldmethod=marker:foldlevel=0:foldmarker=#[of],#[cf]

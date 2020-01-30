@@ -1,4 +1,8 @@
-export PATH=/usr/local/bin:$PATH
+#!/usr/bin/env bash
+
+$(set | grep ^DOCKER | (while read i;do echo "export ${i}";done))
+
+export PATH=/usr/local/bin:\$PATH
 
 #IP=$(ifconfig en0 | grep "inet " | awk '$1=="inet" {print $2}')
 #${IP}
@@ -17,7 +21,7 @@ export PATH=/usr/local/bin:$PATH
   #echo fbpanel
   #docker exec -d workbench fbpanel
   #echo icewm
-  docker exec workbench /root/icewm.xinitrc
+  docker exec ${gl_containerName} sudo -i -u ${USER_UNAME} ./icewm.xinitrc
   echo stopping
   #set -xv
   killall Xquartz

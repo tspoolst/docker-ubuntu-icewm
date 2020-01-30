@@ -1,0 +1,18 @@
+#[of]:setup runtime env vars.
+ENV `WORKBENCH_VERSION'="WORKBENCH_VERSION"
+ENV `WORKBENCH_MAJORVER'="WORKBENCH_MAJORVER"
+
+ENV TERM linux
+ENV DEBIAN_FRONTEND noninteractive
+
+ARG WGET="wget --no-verbose -P /tmp/"
+ARG WRECURSE="${WGET} -r -l1 --no-parent -R index.html"
+
+# ARG BINSERVER=10.10.61.17:8081/workbench-${WORKBENCH_MAJORVER}
+# ARG BINSERVER=host.docker.internal:8080/workbench-${WORKBENCH_MAJORVER}
+ARG BINSERVER
+ARG SRCDIR_PACKAGES=${BINSERVER}/packages
+ARG SRCDIR_TERRAFORM_PLUGIN=${BINSERVER}/terraform-plugins/linux_amd64
+ARG SRCDIR_OS=${BINSERVER}/os
+ARG SRCDIR_DOCKERCE=${BINSERVER}/packages/docker-ce
+#[cf]
