@@ -1,0 +1,119 @@
+96da -- ubuntu:16.04 -- 124MB -- 0B -- #(nop)  CMD ["/bin/bash"]
+b323 -- <none>:<none> -- 124MB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+e28d -- <none>:<none> -- 124MB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+2207 -- <none>:<none> -- 124MB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+d614 -- <none>:<none> -- 124MB -- 0B -- #(nop)  ENV TERM=linux
+65d8 -- <none>:<none> -- 124MB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+bffb -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+e85c -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+cc4a -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG BINSERVER
+02f4 -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+ea6a -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+3a77 -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+c430 -- <none>:<none> -- 124MB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+556a -- <none>:<none> -- 124MB -- 150B -- #(nop) COPY file:6b89090f9e8f470fa5777e79075b742a1bd4a16b87acd987bd04fb0e77b4e5bb in /etc/default/keyboard
+ffb5 -- <none>:<none> -- 124MB -- 0B -- touch /etc/apt/sources.list.d/empty.list
+01df -- <none>:<none> -- 124MB -- 1.01kB -- #(nop) COPY file:a27c528295bef7bfb38f544921b757cf2dc96a2cabb6c8b938b5acf9a5bd1732 in /
+3396 -- <none>:<none> -- 124MB -- 3.6kB -- #(nop) COPY file:9be0a5ecc3b9cdfdf050dc19a1d2013ab814e6877c55e103f1bb8dc6aee56708 in /
+bedc -- <none>:<none> -- 124MB -- 3.36kB -- /update-repo-pointers.sh
+f48b -- <none>:<none> -- 126MB -- 2.76MB -- echo Etc/UTC > /etc/localtime &&   apt-get -y update &&   apt-get -y install tzdata &&   ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+4621 -- <none>:<none> -- 126MB -- 0B -- rm -fv /etc/apt/apt.conf.d/docker-clean
+77e8 -- tspoolst/build-env_ubuntu-16_base:1.0.0-dev -- 199MB -- 72.6MB -- apt-get -y update &&   apt-get -y install     net-tools     apt-transport-https     apt-utils     apt-file  &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+29eb -- <none>:<none> -- 199MB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+79a6 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+c863 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+e645 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ENV TERM=linux
+4af7 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+1fcc -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+d40f -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+be24 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG BINSERVER
+6107 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+8521 -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+08db -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+c08b -- <none>:<none> -- 199MB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+5dde -- <none>:<none> -- 725MB -- 526MB -- apt-get -y update &&   apt-get -y install     sudo dialog apt-file dmidecode man bzip2 bsdtar zip unzip whois     bash-completion ncdu htop less tree file screen lsof     openssh-server openssh-client sshfs     vim mc hexedit rsync wget lftp links lynx dnsutils     iputils-ping     nmap tcpdump iftop jnettop     make gcc patch     ruby ruby-dev python-pip python3-pip jq     software-properties-common     coreutils hostname net-tools iproute     psmisc     traceroute iperf &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+f71d -- <none>:<none> -- 746MB -- 21.3MB -- pip2 install --upgrade pip==20.3.4 jinja2==2.11.3 pyyaml==5.4.1 requests jenkinsapi==0.3.9
+7cb9 -- <none>:<none> -- 766MB -- 19.7MB -- pip3 install --upgrade pip==20.3.4 pyyaml requests yq jenkinsapi==0.3.9
+5da5 -- <none>:<none> -- 766MB -- 0B -- rm -f /etc/ssh/ssh_host_*; :
+175d -- <none>:<none> -- 766MB -- 634B -- echo "docker:x:0:" >> /etc/group
+90a3 -- <none>:<none> -- 766MB -- 27.3kB -- curl -fsSL http://host.docker.internal:8080/download.docker.com/linux/ubuntu/gpg | apt-key add -
+4df1 -- <none>:<none> -- 766MB -- 6.93kB -- add-apt-repository   "deb [arch=amd64] https://download.docker.com/linux/ubuntu   $(lsb_release -cs)   stable" &&   /update-repo-pointers.sh
+78ee -- <none>:<none> -- 956MB -- 190MB -- apt-get -y update &&   apt-get -y install docker-ce-cli=$(apt-cache madison docker-ce-cli | grep -oE '[^[:blank:]]+19.03.[^[:blank:]]+' | head -n 1) &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+9d61 -- <none>:<none> -- 972MB -- 16.2MB -- ${WGET} http://host.docker.internal:8080/github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64 -O /usr/bin/docker-compose &&   chmod 755 /usr/bin/docker-compose
+c156 -- <none>:<none> -- 2.46GB -- 1.48GB -- apt-get -y update &&   apt-get -y install gettext asciidoc xmlto tk     libcurl4-openssl-dev zlib1g-dev libssl-dev libexpat1-dev &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+3671 -- <none>:<none> -- 2.49GB -- 37.4MB -- ${WGET} http://host.docker.internal:8080/mirrors.edge.kernel.org/pub/software/scm/git/git-2.23.0.tar.gz &&   cd /tmp/ &&   tar zxf git-2.23.0.tar.gz &&   cd /tmp/git-2.23.0/ &&   ./configure --prefix=/usr --exec_prefix=/usr --with-curl --with-expat --with-tcltk &&   make &&   make man &&   make strip &&   make install &&   make install-man &&   cd .. &&   rm -rf /tmp/*
+f1b3 -- <none>:<none> -- 2.49GB -- 0B -- mkdir -p usr/share/bash-completion/completions
+d639 -- <none>:<none> -- 2.49GB -- 66.9kB -- #(nop) COPY file:959a021bae65c0f6276a24b5587e2ba2fadef7b5cdfd2d378779ad50975193f3 in /usr/share/bash-completion/completions/git
+24e7 -- <none>:<none> -- 2.49GB -- 3B -- ln -sv git /usr/share/bash-completion/completions/gitk
+a9e3 -- <none>:<none> -- 2.5GB -- 5.62MB -- apt-get -y update &&   apt-get -y install bison byacc &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+64d8 -- <none>:<none> -- 2.51GB -- 9.14MB -- ${WGET} http://host.docker.internal:8080/ftp.gnu.org/gnu/bash/bash-5.0.tar.gz &&   cd /tmp/ &&   tar zxf bash-5.0.tar.gz &&   cd /tmp/bash-5.0/ &&   ./configure --prefix=/usr --exec_prefix=/usr &&   make install-strip &&   bash -c '[[ -L "/bin" ]] || ln -svf /usr/bin/bash /bin/bash' &&   cd .. &&   rm -rf /tmp/*
+cef7 -- <none>:<none> -- 2.65GB -- 145MB -- cd /tmp &&   ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/packer/1.4.3/packer_1.4.3_linux_amd64.zip &&   unzip /tmp/packer_1.4.3_linux_amd64.zip -d /usr/bin/ &&   rm -f /tmp/*
+cfc2 -- <none>:<none> -- 2.65GB -- 0B -- #(nop)  ENV VAGRANT_CHECKPOINT_DISABLE=yes
+fde2 -- <none>:<none> -- 2.77GB -- 121MB -- ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.deb &&   apt-get -y install /tmp/vagrant_2.2.5_x86_64.deb &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/* &&   rm -f /tmp/vagrant_2.2.5_x86_64.deb
+1574 -- <none>:<none> -- 2.79GB -- 16.6MB -- vagrant plugin install vagrant-scp
+9b70 -- <none>:<none> -- 2.81GB -- 16.6MB -- vagrant plugin install vagrant-vbox-snapshot
+20e5 -- <none>:<none> -- 2.82GB -- 16.7MB -- vagrant plugin install vagrant-hostmanager
+0fb9 -- <none>:<none> -- 2.84GB -- 18.5MB -- vagrant plugin install pry-byebug
+2fef -- <none>:<none> -- 2.84GB -- 0B -- #(nop)  ENV CHECKPOINT_DISABLE=yes
+130b -- <none>:<none> -- 3.18GB -- 339MB -- ${WGET} http://host.docker.internal:8080/dl.google.com/go/go1.12.9.linux-amd64.tar.gz &&   tar zxf /tmp/go1.12.9.linux-amd64.tar.gz -C /usr/local &&   rm -rf /tmp/*
+c7d9 -- <none>:<none> -- 3.23GB -- 49MB -- ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/terraform/0.12.7/terraform_0.12.7_linux_amd64.zip &&   unzip /tmp/terraform_0.12.7_linux_amd64.zip -d /usr/bin/ &&   rm -rf /tmp/*
+0731 -- <none>:<none> -- 3.23GB -- 41B -- echo "complete -C /usr/bin/terraform terraform" > /usr/share/bash-completion/completions/terraform
+d00f -- <none>:<none> -- 3.23GB -- 0B -- mkdir -p /terraform-plugins/linux_amd64/
+9b24 -- <none>:<none> -- 3.25GB -- 20.4MB -- ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/terraform-provider-null/2.1.2/terraform-provider-null_2.1.2_linux_amd64.zip &&   unzip /tmp/terraform-provider-null_2.1.2_linux_amd64.zip -d /terraform-plugins/linux_amd64/ &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provider-null_* &&   rm -rf /tmp/*
+ad74 -- <none>:<none> -- 3.28GB -- 31MB -- ${WGET} http://host.docker.internal:8080/github.com/terra-farm/terraform-provider-virtualbox/releases/download/v0.2.0/terraform-provider-virtualbox-v0.2.0-linux_amd64 &&   mv /tmp/terraform-provider-virtualbox-v0.2.0-linux_amd64 /terraform-plugins/linux_amd64/terraform-provider-virtualbox_v0.2.0 &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provider-virtualbox_*
+9e22 -- <none>:<none> -- 3.32GB -- 39.6MB -- ${WGET} http://host.docker.internal:8080/github.com/radekg/terraform-provisioner-ansible/releases/download/v2.3.0/terraform-provisioner-ansible-linux-amd64_v2.3.0 &&   mv /tmp/terraform-provisioner-ansible-linux-amd64_v2.3.0 /terraform-plugins/linux_amd64/terraform-provisioner-ansible_v2.3.0 &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provisioner-ansible_*
+1b4d -- <none>:<none> -- 3.43GB -- 106MB -- pip2 install ansible==2.7.13
+9bef -- <none>:<none> -- 3.43GB -- 1.82kB -- ${WGET} http://host.docker.internal:8080/github.com/tspoolst/vbox-remote/archive/v0.2.2.tar.gz &&   tar zvxf /tmp/v0.2.2.tar.gz &&   mkdir -p /usr/local &&   mv -f vbox-remote-0.2.2 /usr/local/vbox-remote &&   rm -rf /tmp/*
+03d6 -- <none>:<none> -- 3.43GB -- 60.7kB -- ${WGET} http://host.docker.internal:8080/scriptvoodoo.org/pub/projects/shutils/shutils-0.0.1.tar.bz2 &&   mkdir -p /packages &&   tar jxf /tmp/shutils-0.0.1.tar.bz2 -C /packages &&   cd /packages &&   ln -sv shutils-0.0.1/linkit &&   ./linkit shutils-0.0.1 &&   rm -rf /tmp/*
+ae87 -- <none>:<none> -- 3.43GB -- 4.59kB -- ${WGET} http://host.docker.internal:8080/github.com/tspoolst/json2yaml-yaml2json/archive/v0.1.0.tar.gz &&   tar zxf /tmp/v0.1.0.tar.gz -C / &&   cp -av json2yaml-yaml2json-0.1.0/json2yaml json2yaml-yaml2json-0.1.0/yaml2json /usr/bin/ &&   rm -rf /tmp/*
+0c6b -- <none>:<none> -- 3.43GB -- 7.43kB -- #(nop) COPY dir:02e830d655f8ca6788aa481dafd1afb1fc66e2c3be61802d7924b7342678756d in /
+1033 -- <none>:<none> -- 3.48GB -- 49.8MB -- bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
+3a52 -- <none>:<none> -- 3.48GB -- 10.6kB -- chmod 4755 /usr/bin/mesg
+431c -- <none>:<none> -- 3.48GB -- 78.3kB -- #(nop) COPY dir:a1660640c3277936c165c47c76ac14bd68d87eb8e19b775bbac9d0300fec6ef6 in /
+2960 -- <none>:<none> -- 3.48GB -- 0B -- mkdir -p /etc/my_init.d
+a94c -- <none>:<none> -- 3.48GB -- 530B -- #(nop) COPY file:2b5d3a25a22e04a2a26dcbf7ecc95a6653fe77193f63a5dfb6cc7ccceb5c0fa8 in /etc/my_init.d/startup.sh
+20c2 -- <none>:<none> -- 3.48GB -- 530B -- chmod 755 /etc/my_init.d/startup.sh
+88a1 -- <none>:<none> -- 3.48GB -- 0B -- rm -fv /etc/configured
+2091 -- <none>:<none> -- 3.48GB -- 2.38kB -- #(nop) COPY file:72940775976c0556c9dcec32aaec4c9c0129ade4e5f0c8cacc42a3139a9e0518 in /add_user.bsh
+aec2 -- <none>:<none> -- 3.48GB -- 2.38kB -- chmod 755 /add_user.bsh
+7654 -- tspoolst/build-env_ubuntu-16_cmdline:1.0.0-dev -- 3.48GB -- 0B -- #(nop)  CMD ["/usr/sbin/my_init"]
+6ae0 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+c147 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+fb5c -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+e07f -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ENV TERM=linux
+8e11 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+b541 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+bbd4 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+95ac -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG BINSERVER
+b63a -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+c19e -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+8966 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+52e0 -- <none>:<none> -- 3.48GB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+46a3 -- <none>:<none> -- 3.56GB -- 82.4MB -- apt-get -y update &&   apt-get -y install     rox-filer     nedit     xterm rxvt-unicode &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+afbd -- <none>:<none> -- 3.6GB -- 41.7MB -- dpkg --add-architecture i386 &&   apt-get -y update &&   apt-get -y install libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+5df9 -- <none>:<none> -- 3.6GB -- 197kB -- #(nop) COPY file:06f0d1aaaff88eb06c6fbaf3e1695e7b35b36d3281503fc6f7b13bed810c5311 in /tmp/
+b399 -- <none>:<none> -- 3.6GB -- 486kB -- tar jxvf /tmp/code-browser-2.18-pkg.tar.bz2 -C /
+2884 -- <none>:<none> -- 3.6GB -- 0B -- rm -f /tmp/code-browser-2.18-pkg.tar.bz2
+510e -- <none>:<none> -- 3.6GB -- 1.19kB -- cd /packages &&   ./linkit code-browser-2.18
+c3e7 -- <none>:<none> -- 3.6GB -- 1.2MB -- #(nop) COPY dir:a66cfe4063f271ad1a90b0514cf94ce2d654706b80cc5d1dc14c01f15380d6cb in /
+a5e5 -- tspoolst/build-env_ubuntu-16_gui:1.0.0-dev -- 3.65GB -- 51MB -- bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
+80aa -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+7ea9 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+5728 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+98a4 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ENV TERM=linux
+c765 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+f93e -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+b879 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+06c5 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG BINSERVER
+472c -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+0cbe -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+60e9 -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+2ead -- <none>:<none> -- 3.65GB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+d829 -- <none>:<none> -- 3.71GB -- 53.7MB -- apt-get -y update &&   apt-get -y install      icewm icewm-themes     fbpanel     xrdp &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+a400 -- <none>:<none> -- 3.72GB -- 16.1MB -- #(nop) COPY file:67c581f9a5a62157be62c56ab18cab1346ba4e00ddd96205bb755b5e2992d18f in /tmp/
+eb25 -- <none>:<none> -- 3.77GB -- 47.9MB -- tar jxf /tmp/packages-icewm.tar.bz2 -C / &&   rm -f /tmp/packages-icewm.tar.bz2
+744d -- <none>:<none> -- 3.77GB -- 1.12MB -- cd /packages &&   ./linkit iceicons-0.10.0 &&   ./linkit icewm-themes-030820
+a00a -- <none>:<none> -- 3.77GB -- 115kB -- ${WGET} http://host.docker.internal:8080/github.com/tspoolst/dlist/archive/v1.0.4.tar.gz &&   tar zxf /tmp/v1.0.4.tar.gz -C /packages &&     rm -f /tmp/v1.0.4.tar.gz
+73a8 -- <none>:<none> -- 3.77GB -- 142B -- cd /packages &&   ./linkit dlist-1.0.4
+c58b -- <none>:<none> -- 3.77GB -- 47.9kB -- #(nop) COPY dir:6b6cf6491badde75ebde66b2c942f87fc25946f01e2c70f7e96889e5028a3240 in /
+98a7 -- tspoolst/build-env_ubuntu-16_desktop:1.0.0-dev -- 3.82GB -- 51.1MB -- bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'

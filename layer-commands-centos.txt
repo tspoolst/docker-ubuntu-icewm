@@ -1,0 +1,123 @@
+5e35 -- centos:7 -- 203MB -- 0B -- #(nop)  CMD ["/bin/bash"]
+eebc -- <none>:<none> -- 203MB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+7b8f -- <none>:<none> -- 203MB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+77d7 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+35d6 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ENV TERM=linux
+8405 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+2c17 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+b4e1 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+a950 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG BINSERVER
+e905 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+1c77 -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+56be -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+81bc -- <none>:<none> -- 203MB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+bffa -- <none>:<none> -- 203MB -- 150B -- #(nop) COPY file:6b89090f9e8f470fa5777e79075b742a1bd4a16b87acd987bd04fb0e77b4e5bb in /etc/default/keyboard
+c405 -- <none>:<none> -- 203MB -- 1.01kB -- #(nop) COPY file:a27c528295bef7bfb38f544921b757cf2dc96a2cabb6c8b938b5acf9a5bd1732 in /
+3153 -- <none>:<none> -- 203MB -- 3.6kB -- #(nop) COPY file:9be0a5ecc3b9cdfdf050dc19a1d2013ab814e6877c55e103f1bb8dc6aee56708 in /
+6deb -- <none>:<none> -- 203MB -- 13.9kB -- /update-repo-pointers.sh
+ab44 -- <none>:<none> -- 229MB -- 25.5MB -- echo Etc/UTC > /etc/localtime &&   : &&   yum -y install tzdata &&   ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+adda -- <none>:<none> -- 229MB -- 1kB -- lc_confFile="$(cat /etc/yum.conf)";echo "${lc_confFile}" | grep -v ^tsflags > /etc/yum.conf
+9705 -- tspoolst/build-env_centos-7_base:1.0.0-dev -- 263MB -- 34.3MB -- : &&   yum -y install     net-tools     deltarpm     initscripts     man &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+36e8 -- <none>:<none> -- 263MB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+4c9a -- <none>:<none> -- 263MB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+e927 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+f462 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ENV TERM=linux
+9c40 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+29d7 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+bb16 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+2cb5 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG BINSERVER
+43d7 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+5ba1 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+7e61 -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+c95d -- <none>:<none> -- 263MB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+62a5 -- <none>:<none> -- 405MB -- 142MB -- yum -y install epel-release &&   /update-repo-pointers.sh
+9f20 -- <none>:<none> -- 805MB -- 400MB -- : &&   yum -y install     coreutils sysvinit-tools hostname net-tools iproute     sudo psmisc dialog dmidecode man man-pages bzip2 bsdtar zip unzip whois     bash bash-completion bash-completion-extras util-linux     ncdu htop findutils tree file screen lsof     openssh-server openssh-clients sshfs perl-Digest-SHA     cronie     vim mc hexedit rsync wget lftp links lynx     bind-utils traceroute iputils nmap iperf tcpdump iftop jnettop     make gcc-4.8.5 patch     ruby ruby-devel python2-pip python3-pip python-devel jq &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+5cad -- <none>:<none> -- 826MB -- 21.3MB -- pip2 install --upgrade pip==20.3.4 jinja2==2.11.3 pyyaml==5.4.1 requests jenkinsapi==0.3.9
+914d -- <none>:<none> -- 848MB -- 21.8MB -- pip3 install --upgrade pip==20.3.4 pyyaml requests yq jenkinsapi==0.3.9
+0245 -- <none>:<none> -- 848MB -- 0B -- rm -f /etc/ssh/ssh_host_*; :
+0bd1 -- <none>:<none> -- 848MB -- 433B -- echo "docker:x:0:" >> /etc/group
+26d8 -- <none>:<none> -- 848MB -- 2.42kB -- #(nop) COPY file:6a6e7344871a099f681055b09cb17fea44f4ab06343baab2c3b1ca01d9fe2b3d in /etc/yum.repos.d/
+b830 -- <none>:<none> -- 848MB -- 19.2kB -- /update-repo-pointers.sh
+e206 -- <none>:<none> -- 1.06GB -- 209MB -- : &&   yum -y install docker-ce-cli-19.03.1 &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+9d95 -- <none>:<none> -- 1.07GB -- 16.2MB -- ${WGET} http://host.docker.internal:8080/github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64 -O /usr/bin/docker-compose &&   chmod 755 /usr/bin/docker-compose
+977d -- <none>:<none> -- 1.26GB -- 185MB -- : &&   yum -y install gettext asciidoc xmlto tk     libcurl-devel zlib-devel openssl-devel expat-devel &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+8f20 -- <none>:<none> -- 1.29GB -- 36.5MB -- ${WGET} http://host.docker.internal:8080/mirrors.edge.kernel.org/pub/software/scm/git/git-2.23.0.tar.gz &&   cd /tmp/ &&   tar zxf git-2.23.0.tar.gz &&   cd /tmp/git-2.23.0/ &&   ./configure --prefix=/usr --exec_prefix=/usr --with-curl --with-expat --with-tcltk &&   make &&   make man &&   make strip &&   make install &&   make install-man &&   cd .. &&   rm -rf /tmp/*
+6724 -- <none>:<none> -- 1.29GB -- 0B -- mkdir -p usr/share/bash-completion/completions
+7900 -- <none>:<none> -- 1.3GB -- 66.9kB -- #(nop) COPY file:959a021bae65c0f6276a24b5587e2ba2fadef7b5cdfd2d378779ad50975193f3 in /usr/share/bash-completion/completions/git
+ebec -- <none>:<none> -- 1.3GB -- 3B -- ln -sv git /usr/share/bash-completion/completions/gitk
+3ab0 -- <none>:<none> -- 1.33GB -- 36MB -- : &&   yum -y install bison byacc &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+8d7a -- <none>:<none> -- 1.34GB -- 9.18MB -- ${WGET} http://host.docker.internal:8080/ftp.gnu.org/gnu/bash/bash-5.0.tar.gz &&   cd /tmp/ &&   tar zxf bash-5.0.tar.gz &&   cd /tmp/bash-5.0/ &&   ./configure --prefix=/usr --exec_prefix=/usr &&   make install-strip &&   bash -c '[[ -L "/bin" ]] || ln -svf /usr/bin/bash /bin/bash' &&   cd .. &&   rm -rf /tmp/*
+280e -- <none>:<none> -- 1.49GB -- 145MB -- cd /tmp &&   ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/packer/1.4.3/packer_1.4.3_linux_amd64.zip &&   unzip /tmp/packer_1.4.3_linux_amd64.zip -d /usr/bin/ &&   rm -f /tmp/*
+05b6 -- <none>:<none> -- 1.49GB -- 0B -- #(nop)  ENV VAGRANT_CHECKPOINT_DISABLE=yes
+2714 -- <none>:<none> -- 1.64GB -- 154MB -- ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.rpm &&   yum -y install /tmp/vagrant_2.2.5_x86_64.rpm &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi &&   rm -f /tmp/vagrant_2.2.5_x86_64.rpm
+dd3b -- <none>:<none> -- 1.66GB -- 16.6MB -- vagrant plugin install vagrant-scp
+0ceb -- <none>:<none> -- 1.67GB -- 16.6MB -- vagrant plugin install vagrant-vbox-snapshot
+7a34 -- <none>:<none> -- 1.69GB -- 16.7MB -- vagrant plugin install vagrant-hostmanager
+c369 -- <none>:<none> -- 1.71GB -- 18.5MB -- vagrant plugin install pry-byebug
+f151 -- <none>:<none> -- 1.71GB -- 0B -- #(nop)  ENV CHECKPOINT_DISABLE=yes
+0f14 -- <none>:<none> -- 2.05GB -- 339MB -- ${WGET} http://host.docker.internal:8080/dl.google.com/go/go1.12.9.linux-amd64.tar.gz &&   tar zxf /tmp/go1.12.9.linux-amd64.tar.gz -C /usr/local &&   rm -rf /tmp/*
+23e0 -- <none>:<none> -- 2.1GB -- 49MB -- ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/terraform/0.12.7/terraform_0.12.7_linux_amd64.zip &&   unzip /tmp/terraform_0.12.7_linux_amd64.zip -d /usr/bin/ &&   rm -rf /tmp/*
+9033 -- <none>:<none> -- 2.1GB -- 41B -- echo "complete -C /usr/bin/terraform terraform" > /usr/share/bash-completion/completions/terraform
+41ae -- <none>:<none> -- 2.1GB -- 0B -- mkdir -p /terraform-plugins/linux_amd64/
+5b93 -- <none>:<none> -- 2.12GB -- 20.4MB -- ${WGET} http://host.docker.internal:8080/releases.hashicorp.com/terraform-provider-null/2.1.2/terraform-provider-null_2.1.2_linux_amd64.zip &&   unzip /tmp/terraform-provider-null_2.1.2_linux_amd64.zip -d /terraform-plugins/linux_amd64/ &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provider-null_* &&   rm -rf /tmp/*
+cff9 -- <none>:<none> -- 2.15GB -- 31MB -- ${WGET} http://host.docker.internal:8080/github.com/terra-farm/terraform-provider-virtualbox/releases/download/v0.2.0/terraform-provider-virtualbox-v0.2.0-linux_amd64 &&   mv /tmp/terraform-provider-virtualbox-v0.2.0-linux_amd64 /terraform-plugins/linux_amd64/terraform-provider-virtualbox_v0.2.0 &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provider-virtualbox_*
+f720 -- <none>:<none> -- 2.19GB -- 39.6MB -- ${WGET} http://host.docker.internal:8080/github.com/radekg/terraform-provisioner-ansible/releases/download/v2.3.0/terraform-provisioner-ansible-linux-amd64_v2.3.0 &&   mv /tmp/terraform-provisioner-ansible-linux-amd64_v2.3.0 /terraform-plugins/linux_amd64/terraform-provisioner-ansible_v2.3.0 &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provisioner-ansible_*
+1453 -- <none>:<none> -- 2.28GB -- 96.1MB -- pip2 install ansible==2.7.13
+6921 -- <none>:<none> -- 2.28GB -- 1.82kB -- ${WGET} http://host.docker.internal:8080/github.com/tspoolst/vbox-remote/archive/v0.2.2.tar.gz &&   tar zvxf /tmp/v0.2.2.tar.gz &&   mkdir -p /usr/local &&   mv -f vbox-remote-0.2.2 /usr/local/vbox-remote &&   rm -rf /tmp/*
+2e5b -- <none>:<none> -- 2.28GB -- 60.7kB -- ${WGET} http://host.docker.internal:8080/scriptvoodoo.org/pub/projects/shutils/shutils-0.0.1.tar.bz2 &&   mkdir -p /packages &&   tar jxf /tmp/shutils-0.0.1.tar.bz2 -C /packages &&   cd /packages &&   ln -sv shutils-0.0.1/linkit &&   ./linkit shutils-0.0.1 &&   rm -rf /tmp/*
+096c -- <none>:<none> -- 2.28GB -- 4.59kB -- ${WGET} http://host.docker.internal:8080/github.com/tspoolst/json2yaml-yaml2json/archive/v0.1.0.tar.gz &&   tar zxf /tmp/v0.1.0.tar.gz -C / &&   cp -av json2yaml-yaml2json-0.1.0/json2yaml json2yaml-yaml2json-0.1.0/yaml2json /usr/bin/ &&   rm -rf /tmp/*
+7222 -- <none>:<none> -- 2.28GB -- 7.43kB -- #(nop) COPY dir:02e830d655f8ca6788aa481dafd1afb1fc66e2c3be61802d7924b7342678756d in /
+f2cc -- <none>:<none> -- 2.32GB -- 40.8MB -- bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
+4e95 -- <none>:<none> -- 2.32GB -- 11.2kB -- chmod 4755 /usr/bin/mesg
+9909 -- <none>:<none> -- 2.32GB -- 78.3kB -- #(nop) COPY dir:a1660640c3277936c165c47c76ac14bd68d87eb8e19b775bbac9d0300fec6ef6 in /
+9288 -- <none>:<none> -- 2.32GB -- 0B -- mkdir -p /etc/my_init.d
+f5bc -- <none>:<none> -- 2.32GB -- 530B -- #(nop) COPY file:2b5d3a25a22e04a2a26dcbf7ecc95a6653fe77193f63a5dfb6cc7ccceb5c0fa8 in /etc/my_init.d/startup.sh
+4e58 -- <none>:<none> -- 2.32GB -- 530B -- chmod 755 /etc/my_init.d/startup.sh
+be77 -- <none>:<none> -- 2.32GB -- 0B -- rm -fv /etc/configured
+8c6a -- <none>:<none> -- 2.32GB -- 2.38kB -- #(nop) COPY file:72940775976c0556c9dcec32aaec4c9c0129ade4e5f0c8cacc42a3139a9e0518 in /add_user.bsh
+374a -- <none>:<none> -- 2.32GB -- 2.38kB -- chmod 755 /add_user.bsh
+c7ea -- tspoolst/build-env_centos-7_cmdline:1.0.0-dev -- 2.32GB -- 0B -- #(nop)  CMD ["/usr/sbin/my_init"]
+b829 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+d9a8 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+6481 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+9fa6 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ENV TERM=linux
+a15b -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+31cc -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+f9db -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+2f1d -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG BINSERVER
+3376 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+eda2 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+0be3 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+70f1 -- <none>:<none> -- 2.32GB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+cf81 -- <none>:<none> -- 2.52GB -- 193MB -- yum -y install libglade2 pangox-compat
+7a07 -- <none>:<none> -- 2.52GB -- 1.27MB -- ${WGET} "http://host.docker.internal:8080/downloads.sourceforge.net/project/rox/rox/2.10/rox-filer-linux-x86_64-2.10.tar.bz2?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Frox%2Ffiles%2Frox%2F2.10%2Frox-filer-linux-x86_64-2.10.tar.bz2%2Fdownload&ts=1577451708" -O /tmp/rox-filer-linux-x86_64-2.10.tar.bz2
+7b64 -- <none>:<none> -- 2.52GB -- 3.91MB -- tar jxf /tmp/rox-filer-linux-x86_64-2.10.tar.bz2 -C /usr/local/
+5fe5 -- <none>:<none> -- 2.52GB -- 124B -- echo "APP_DIR=/usr/local/rox-filer-linux-x86_64-2.10/ROX-Filer /usr/local/rox-filer-linux-x86_64-2.10/ROX-Filer/ROX-Filer "$@"" > /usr/bin/rox && chmod 755 /usr/bin/rox && ln -sv rox /usr/bin/rox-filer
+5c51 -- <none>:<none> -- 2.57GB -- 46.3MB -- : &&   yum -y install         nedit     xterm rxvt-unicode &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+9e6a -- <none>:<none> -- 2.71GB -- 141MB -- rpm -Uvh http://host.docker.internal:8080/li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm &&   /update-repo-pointers.sh &&   : &&   yum -y install gtk2.i686 pango.i686 pangox-compat-0.0.2-2.el7.i686 &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+e117 -- <none>:<none> -- 2.71GB -- 197kB -- #(nop) COPY file:06f0d1aaaff88eb06c6fbaf3e1695e7b35b36d3281503fc6f7b13bed810c5311 in /tmp/
+fb4a -- <none>:<none> -- 2.71GB -- 486kB -- tar jxvf /tmp/code-browser-2.18-pkg.tar.bz2 -C /
+e3ad -- <none>:<none> -- 2.71GB -- 0B -- rm -f /tmp/code-browser-2.18-pkg.tar.bz2
+7968 -- <none>:<none> -- 2.71GB -- 1.19kB -- cd /packages &&   ./linkit code-browser-2.18
+8c6d -- <none>:<none> -- 2.71GB -- 1.2MB -- #(nop) COPY dir:a66cfe4063f271ad1a90b0514cf94ce2d654706b80cc5d1dc14c01f15380d6cb in /
+5746 -- tspoolst/build-env_centos-7_gui:1.0.0-dev -- 2.75GB -- 42MB -- bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
+df9f -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+16a1 -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+77ac -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ENV WORKBENCH_MAJORVER=1
+dbdc -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ENV TERM=linux
+bd4a -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ENV DEBIAN_FRONTEND=noninteractive
+be1d -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG WGET=wget --no-verbose -P /tmp/
+f436 -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+d48c -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG BINSERVER
+f5b1 -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG SRCDIR_PACKAGES=/packages
+6130 -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+ebc6 -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG SRCDIR_OS=/os
+2b0c -- <none>:<none> -- 2.75GB -- 0B -- #(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+54cd -- <none>:<none> -- 2.93GB -- 178MB -- : &&   yum -y install      icewm icewm-themes     fbpanel     xrdp &&   yum -y clean all &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* &&     if [[ -e /bin/mandb ]];then mandb;fi
+5713 -- <none>:<none> -- 2.95GB -- 16.1MB -- #(nop) COPY file:67c581f9a5a62157be62c56ab18cab1346ba4e00ddd96205bb755b5e2992d18f in /tmp/
+4158 -- <none>:<none> -- 2.99GB -- 47.9MB -- tar jxf /tmp/packages-icewm.tar.bz2 -C / &&   rm -f /tmp/packages-icewm.tar.bz2
+0861 -- <none>:<none> -- 3GB -- 1.13MB -- cd /packages &&   ./linkit iceicons-0.10.0 &&   ./linkit icewm-themes-030820
+cd96 -- <none>:<none> -- 3GB -- 115kB -- ${WGET} http://host.docker.internal:8080/github.com/tspoolst/dlist/archive/v1.0.4.tar.gz &&   tar zxf /tmp/v1.0.4.tar.gz -C /packages &&     rm -f /tmp/v1.0.4.tar.gz
+26af -- <none>:<none> -- 3GB -- 142B -- cd /packages &&   ./linkit dlist-1.0.4
+a11e -- <none>:<none> -- 3GB -- 47.9kB -- #(nop) COPY dir:6b6cf6491badde75ebde66b2c942f87fc25946f01e2c70f7e96889e5028a3240 in /
+fdc3 -- tspoolst/build-env_centos-7_desktop:1.0.0-dev -- 3.04GB -- 42.1MB -- bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
