@@ -1,0 +1,119 @@
+#(nop)  CMD ["/bin/bash"]
+#(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+#(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+#(nop)  ENV WORKBENCH_MAJORVER=1
+#(nop)  ENV TERM=linux
+#(nop)  ENV DEBIAN_FRONTEND=noninteractive
+#(nop)  ARG WGET=wget --no-verbose -P /tmp/
+#(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+#(nop)  ARG BINSERVER
+#(nop)  ARG SRCDIR_PACKAGES=/packages
+#(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+#(nop)  ARG SRCDIR_OS=/os
+#(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+#(nop) COPY file:6b89090f9e8f470fa5777e79075b742a1bd4a16b87acd987bd04fb0e77b4e5bb in /etc/default/keyboard
+touch /etc/apt/sources.list.d/empty.list
+#(nop) COPY file:a27c528295bef7bfb38f544921b757cf2dc96a2cabb6c8b938b5acf9a5bd1732 in /
+#(nop) COPY file:9be0a5ecc3b9cdfdf050dc19a1d2013ab814e6877c55e103f1bb8dc6aee56708 in /
+/update-repo-pointers.sh
+echo Etc/UTC > /etc/localtime &&   apt-get -y update &&   apt-get -y install tzdata &&   ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+rm -fv /etc/apt/apt.conf.d/docker-clean
+apt-get -y update &&   apt-get -y install     net-tools     apt-transport-https     apt-utils     apt-file  &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+#(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+#(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+#(nop)  ENV WORKBENCH_MAJORVER=1
+#(nop)  ENV TERM=linux
+#(nop)  ENV DEBIAN_FRONTEND=noninteractive
+#(nop)  ARG WGET=wget --no-verbose -P /tmp/
+#(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+#(nop)  ARG BINSERVER
+#(nop)  ARG SRCDIR_PACKAGES=/packages
+#(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+#(nop)  ARG SRCDIR_OS=/os
+#(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+apt-get -y update &&   apt-get -y install     sudo dialog apt-file dmidecode man bzip2 bsdtar zip unzip whois     bash-completion ncdu htop less tree file screen lsof     openssh-server openssh-client sshfs     vim mc hexedit rsync wget lftp links lynx dnsutils     iputils-ping     nmap tcpdump iftop jnettop     make gcc patch     ruby ruby-dev python-pip python3-pip jq     software-properties-common     coreutils hostname net-tools iproute     psmisc     traceroute iperf &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+pip2 install --upgrade pip==20.3.4 jinja2==2.11.3 pyyaml==5.4.1 requests jenkinsapi==0.3.9
+pip3 install --upgrade pip==20.3.4 pyyaml requests yq jenkinsapi==0.3.9
+rm -f /etc/ssh/ssh_host_*; :
+echo "docker:x:0:" >> /etc/group
+curl -fsSL http://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository   "deb [arch=amd64] http://download.docker.com/linux/ubuntu   $(lsb_release -cs)   stable" &&   /update-repo-pointers.sh
+apt-get -y update &&   apt-get -y install docker-ce-cli=$(apt-cache madison docker-ce-cli | grep -oE '[^[:blank:]]+19.03.[^[:blank:]]+' | head -n 1) &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+${WGET} http://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64 -O /usr/bin/docker-compose &&   chmod 755 /usr/bin/docker-compose
+apt-get -y update &&   apt-get -y install gettext asciidoc xmlto tk     libcurl4-openssl-dev zlib1g-dev libssl-dev libexpat1-dev &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+${WGET} http://mirrors.edge.kernel.org/pub/software/scm/git/git-2.23.0.tar.gz &&   cd /tmp/ &&   tar zxf git-2.23.0.tar.gz &&   cd /tmp/git-2.23.0/ &&   ./configure --prefix=/usr --exec_prefix=/usr --with-curl --with-expat --with-tcltk &&   make &&   make man &&   make strip &&   make install &&   make install-man &&   cd .. &&   rm -rf /tmp/*
+mkdir -p usr/share/bash-completion/completions
+#(nop) COPY file:959a021bae65c0f6276a24b5587e2ba2fadef7b5cdfd2d378779ad50975193f3 in /usr/share/bash-completion/completions/git
+ln -sv git /usr/share/bash-completion/completions/gitk
+apt-get -y update &&   apt-get -y install bison byacc &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+${WGET} http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz &&   cd /tmp/ &&   tar zxf bash-5.0.tar.gz &&   cd /tmp/bash-5.0/ &&   ./configure --prefix=/usr --exec_prefix=/usr &&   make install-strip &&   bash -c '[[ -L "/bin" ]] || ln -svf /usr/bin/bash /bin/bash' &&   cd .. &&   rm -rf /tmp/*
+cd /tmp &&   ${WGET} http://releases.hashicorp.com/packer/1.4.3/packer_1.4.3_linux_amd64.zip &&   unzip /tmp/packer_1.4.3_linux_amd64.zip -d /usr/bin/ &&   rm -f /tmp/*
+#(nop)  ENV VAGRANT_CHECKPOINT_DISABLE=yes
+${WGET} http://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.deb &&   apt-get -y install /tmp/vagrant_2.2.5_x86_64.deb &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/* &&   rm -f /tmp/vagrant_2.2.5_x86_64.deb
+vagrant plugin install vagrant-scp
+vagrant plugin install vagrant-vbox-snapshot
+vagrant plugin install vagrant-hostmanager
+vagrant plugin install pry-byebug
+#(nop)  ENV CHECKPOINT_DISABLE=yes
+${WGET} http://dl.google.com/go/go1.12.9.linux-amd64.tar.gz &&   tar zxf /tmp/go1.12.9.linux-amd64.tar.gz -C /usr/local &&   rm -rf /tmp/*
+${WGET} http://releases.hashicorp.com/terraform/0.12.7/terraform_0.12.7_linux_amd64.zip &&   unzip /tmp/terraform_0.12.7_linux_amd64.zip -d /usr/bin/ &&   rm -rf /tmp/*
+echo "complete -C /usr/bin/terraform terraform" > /usr/share/bash-completion/completions/terraform
+mkdir -p /terraform-plugins/linux_amd64/
+${WGET} http://releases.hashicorp.com/terraform-provider-null/2.1.2/terraform-provider-null_2.1.2_linux_amd64.zip &&   unzip /tmp/terraform-provider-null_2.1.2_linux_amd64.zip -d /terraform-plugins/linux_amd64/ &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provider-null_* &&   rm -rf /tmp/*
+${WGET} http://github.com/terra-farm/terraform-provider-virtualbox/releases/download/v0.2.0/terraform-provider-virtualbox-v0.2.0-linux_amd64 &&   mv /tmp/terraform-provider-virtualbox-v0.2.0-linux_amd64 /terraform-plugins/linux_amd64/terraform-provider-virtualbox_v0.2.0 &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provider-virtualbox_*
+${WGET} http://github.com/radekg/terraform-provisioner-ansible/releases/download/v2.3.0/terraform-provisioner-ansible-linux-amd64_v2.3.0 &&   mv /tmp/terraform-provisioner-ansible-linux-amd64_v2.3.0 /terraform-plugins/linux_amd64/terraform-provisioner-ansible_v2.3.0 &&   chmod 755 /terraform-plugins/linux_amd64/terraform-provisioner-ansible_*
+pip2 install ansible==2.7.13
+${WGET} http://github.com/tspoolst/vbox-remote/archive/v0.2.2.tar.gz &&   tar zvxf /tmp/v0.2.2.tar.gz &&   mkdir -p /usr/local &&   mv -f vbox-remote-0.2.2 /usr/local/vbox-remote &&   rm -rf /tmp/*
+${WGET} http://scriptvoodoo.org/pub/projects/shutils/shutils-0.0.1.tar.bz2 &&   mkdir -p /packages &&   tar jxf /tmp/shutils-0.0.1.tar.bz2 -C /packages &&   cd /packages &&   ln -sv shutils-0.0.1/linkit &&   ./linkit shutils-0.0.1 &&   rm -rf /tmp/*
+${WGET} http://github.com/tspoolst/json2yaml-yaml2json/archive/v0.1.0.tar.gz &&   tar zxf /tmp/v0.1.0.tar.gz -C / &&   cp -av json2yaml-yaml2json-0.1.0/json2yaml json2yaml-yaml2json-0.1.0/yaml2json /usr/bin/ &&   rm -rf /tmp/*
+#(nop) COPY dir:02e830d655f8ca6788aa481dafd1afb1fc66e2c3be61802d7924b7342678756d in /
+bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
+chmod 4755 /usr/bin/mesg
+#(nop) COPY dir:a1660640c3277936c165c47c76ac14bd68d87eb8e19b775bbac9d0300fec6ef6 in /
+mkdir -p /etc/my_init.d
+#(nop) COPY file:2b5d3a25a22e04a2a26dcbf7ecc95a6653fe77193f63a5dfb6cc7ccceb5c0fa8 in /etc/my_init.d/startup.sh
+chmod 755 /etc/my_init.d/startup.sh
+rm -fv /etc/configured
+#(nop) COPY file:72940775976c0556c9dcec32aaec4c9c0129ade4e5f0c8cacc42a3139a9e0518 in /add_user.bsh
+chmod 755 /add_user.bsh
+#(nop)  CMD ["/usr/sbin/my_init"]
+#(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+#(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+#(nop)  ENV WORKBENCH_MAJORVER=1
+#(nop)  ENV TERM=linux
+#(nop)  ENV DEBIAN_FRONTEND=noninteractive
+#(nop)  ARG WGET=wget --no-verbose -P /tmp/
+#(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+#(nop)  ARG BINSERVER
+#(nop)  ARG SRCDIR_PACKAGES=/packages
+#(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+#(nop)  ARG SRCDIR_OS=/os
+#(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+apt-get -y update &&   apt-get -y install     rox-filer     nedit     xterm rxvt-unicode &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+dpkg --add-architecture i386 &&   apt-get -y update &&   apt-get -y install libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+#(nop) COPY file:06f0d1aaaff88eb06c6fbaf3e1695e7b35b36d3281503fc6f7b13bed810c5311 in /tmp/
+tar jxvf /tmp/code-browser-2.18-pkg.tar.bz2 -C /
+rm -f /tmp/code-browser-2.18-pkg.tar.bz2
+cd /packages &&   ./linkit code-browser-2.18
+#(nop) COPY dir:a66cfe4063f271ad1a90b0514cf94ce2d654706b80cc5d1dc14c01f15380d6cb in /
+bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'
+#(nop)  MAINTAINER "Trenton Spoolstra <tspoolst@gmail.com>"
+#(nop)  ENV WORKBENCH_VERSION=1.0.0-dev
+#(nop)  ENV WORKBENCH_MAJORVER=1
+#(nop)  ENV TERM=linux
+#(nop)  ENV DEBIAN_FRONTEND=noninteractive
+#(nop)  ARG WGET=wget --no-verbose -P /tmp/
+#(nop)  ARG WRECURSE=wget --no-verbose -P /tmp/ -r -l1 --no-parent -R index.html
+#(nop)  ARG BINSERVER
+#(nop)  ARG SRCDIR_PACKAGES=/packages
+#(nop)  ARG SRCDIR_TERRAFORM_PLUGIN=/terraform-plugins/linux_amd64
+#(nop)  ARG SRCDIR_OS=/os
+#(nop)  ARG SRCDIR_DOCKERCE=/packages/docker-ce
+apt-get -y update &&   apt-get -y install      icewm icewm-themes     fbpanel     xrdp &&   apt-get -y clean &&     rm -rf /tmp/* /var/tmp/* &&     rm -rf /var/lib/apt/lists/*
+#(nop) COPY file:67c581f9a5a62157be62c56ab18cab1346ba4e00ddd96205bb755b5e2992d18f in /tmp/
+tar jxf /tmp/packages-icewm.tar.bz2 -C / &&   rm -f /tmp/packages-icewm.tar.bz2
+cd /packages &&   ./linkit iceicons-0.10.0 &&   ./linkit icewm-themes-030820
+${WGET} http://github.com/tspoolst/dlist/archive/v1.0.4.tar.gz &&   tar zxf /tmp/v1.0.4.tar.gz -C /packages &&     rm -f /tmp/v1.0.4.tar.gz
+cd /packages &&   ./linkit dlist-1.0.4
+#(nop) COPY dir:6b6cf6491badde75ebde66b2c942f87fc25946f01e2c70f7e96889e5028a3240 in /
+bash -c 'cp -av /etc/skel/{.[[:alnum:]]*,*} /root/ ;   chown root.root /root -Rc'

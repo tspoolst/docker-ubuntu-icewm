@@ -82,26 +82,15 @@ function askyn {
 }
 #[cf]
 #[cf]
-#[of]:function layer_exist {
-function layer_exist {
-  docker images -q $(imageBaseName $1) | grep -q .
-}
-#[cf]
-#[of]:function imageBaseName {
-function imageBaseName {
-  typeset lc_runlevel
-  lc_runlevel="$1"
-  echo "${gl_repoURL}/build-env_${gl_distroList[${gl_distroID}]}_${lc_runlevel}:${gl_version}"
-}
-#[cf]
 #[of]:function build_layers {
 function build_layers {
-  typeset lc_libDir lc_services
+  typeset lc_libDir lc_services lc_dockerCmd
   lc_libDir=./dockerfiles
   #lc_services="-Dsession_sshd -Dsession_crond"
   for lc_runlevel in base ${gl_runlevelList[@]::$((${gl_runlevelID}+1))} ; do
     m4 -E \
       -DDOCKER_REPO=${gl_repoURL} \
+      -DIMAGE_NAME=$(imageBaseName ${lc_runlevel}) \
       -DWORKBENCH_VERSION=${gl_version} \
       -DWORKBENCH_MAJORVER=${gl_majorver} \
       -DDISTRO=${gl_distroList[${gl_distroID}]%%-*} \
@@ -110,9 +99,19 @@ function build_layers {
       ${lc_services} \
       -I${lc_libDir} \
       ${lc_libDir}/build-env_${lc_runlevel}.m4 > Dockerfile || die "Dockerfile compile failed"
-    docker build -t $(imageBaseName ${lc_runlevel}) . || die "docker image build failed"
+    lc_dockerCmd='docker build'
+    if [[ $(uname -s) == "Linux" ]] ; then
+      if ! host_ip=$(set -o pipefail;ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+') ; then
+        if ! host_ip=$(set -o pipefail;dig +short host.docker.internal | grep .) ; then
+          die "could not resolve host.docker.internal"
+        fi
+      fi
+      lc_dockerCmd="${lc_dockerCmd} --add-host host.docker.internal:${host_ip}"
+    fi
+    lc_dockerCmd="${lc_dockerCmd} -t $(imageBaseName ${lc_runlevel}) ."
+    echo "${lc_dockerCmd}"
+    eval "${lc_dockerCmd}" || die "docker image build failed"
   done
-# Makefile sample code
 # build_fullver = $(git describe --tags)
 # build_ver = $(patsubst v%,%, $(or $(and $(word 2,$(subst -, ,$(build_fullver))),$(firstword $(subst -, ,$(build_fullver)))-dev), $(build_fullver)))
 }
@@ -146,6 +145,29 @@ function displayMenu {
   eval "${lc_returnVar}=\"\${lc_selection}\""
 }
 #[cf]
+#[of]:function imageBaseName {
+function imageBaseName {
+  typeset lc_runlevel
+  lc_runlevel="$1"
+  echo "${gl_repoURL}/build-env_${gl_distroList[${gl_distroID}]}_${lc_runlevel}:${gl_version}"
+}
+#[cf]
+#[of]:function layer_exist {
+function layer_exist {
+  docker images -q $(imageBaseName $1) | grep -q .
+}
+#[cf]
+#[of]:function remove_existing_container {
+function remove_existing_container {
+  typeset lc_containerName
+  lc_containerName="$1"
+  docker ps -a --format {{.Names}} | grep -q ^${lc_containerName}$ && {
+    echo "stopping and removing ${lc_containerName}" >&2
+    docker stop ${lc_containerName}
+    docker rm ${lc_containerName}
+  }
+}
+#[cf]
 #[cf]
 #[of]:setup vars
 gl_buildFlag=false
@@ -155,7 +177,7 @@ unset gl_containerOptions gl_imageName
 
 gl_version=$(git describe --tags)
 gl_version="${gl_version#v}"
-[[ -n "${gl_version}" && -z "${gl_version##*-*}" ]] && glversion="${gl_version%%-*}-dev"
+[[ -n "${gl_version}" && -z "${gl_version##*-*}" ]] && gl_version="${gl_version%%-*}-dev"
 gl_majorver="${gl_version%%.*}"
 
 gl_basepath=$(cd ${0%/*};pwd)
@@ -188,6 +210,7 @@ if ! ${gl_buildFlag} ; then
 fi
 
 #[cf]
+set -xv
 #[of]:build layers as needed
 if ${gl_buildFlag} ; then
   build_layers
@@ -205,7 +228,6 @@ if [[ "${gl_containerTypeList[${gl_containerTypeID}]}" == "passthrough" ]] ; the
   gl_containerOptions[${#gl_containerOptions[@]}]="-v ${HOME}:${HOME}/hosthome"
   gl_containerOptions[${#gl_containerOptions[@]}]="-v ${HOME}/git:${HOME}/git"
   gl_containerOptions[${#gl_containerOptions[@]}]="-v ${HOME}/.ssh:${HOME}/.ssh"
-  gl_containerOptions[${#gl_containerOptions[@]}]="-v /Users/Shared/ansible-files:/Users/Shared/ansible-files"
 elif [[ "${gl_containerTypeList[${gl_containerTypeID}]}" =~ (dockeraccess|independent) ]] ; then
   USER_UID="1000"
   USER_GID="1000"
@@ -217,6 +239,8 @@ if [[ "${gl_containerTypeList[${gl_containerTypeID}]}" =~ (passthrough|dockeracc
   gl_containerOptions[${#gl_containerOptions[@]}]="-v /var/run/docker.sock:/var/run/docker.sock"
   gl_containerOptions[${#gl_containerOptions[@]}]="--privileged"
 fi
+# gl_containerOptions[${#gl_containerOptions[@]}]="--net host"
+
 cd ${gl_basepath}
 #[of]:configure XQuartz for windowed mode if runlevel2 or less
 if [[ "$(uname -s)" == "Darwin" ]] && (( gl_runlevelID <= 1 )) ; then
@@ -263,10 +287,7 @@ EOF"
 fi
 #[cf]
 #[of]:recreate workbench container
-docker ps -a | tail -n +2 | grep -q ${gl_containerName} && {
-  docker stop ${gl_containerName}
-  docker rm ${gl_containerName}
-}
+remove_existing_container ${gl_containerName}
 
 if [[ "${gl_containerTypeList[${gl_containerTypeID}]}" == "passthrough" ]] ; then
   mkdir -p ${HOME}/.vagrant.d/boxes ${HOME}/.vagrant.d/tmp ${HOME}/.terraform
@@ -277,14 +298,22 @@ echo "running from image $(imageBaseName ${gl_runlevelList[${gl_runlevelID}]})"
 docker run \
   -e DISPLAY=host.docker.internal:0 \
   -e VBOXHOST=host.docker.internal \
+  $(if [[ $(uname -s) == "Linux" ]] ; then
+      if ! host_ip=$(set -o pipefail;ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+') ; then
+        if ! host_ip=$(set -o pipefail;dig +short host.docker.internal | grep .) ; then
+          die "could not resolve host.docker.internal"
+        fi
+      fi
+      echo "--add-host host.docker.internal:${host_ip}"
+    fi) \
   -d \
   --restart always \
   ${gl_containerOptions[@]} \
-  --net host \
   --name ${gl_containerName} \
   -l ${gl_containerName} \
   -h ${gl_containerName} \
   $(imageBaseName ${gl_runlevelList[${gl_runlevelID}]})
+#  --net host \
 
 docker exec -ti ${gl_containerName} /add_user.bsh "${USER_UID}" "${USER_GID}" "${USER_UNAME}" "${USER_GNAME}" "${USER_HOME}"
 #[c]docker cp os/my_init-ssh/* dc:/
@@ -308,10 +337,7 @@ fi
 
 docker exec -ti ${gl_containerName} sudo -i -u "${USER_UNAME}"
 #docker exec -ti ${gl_containerName} sudo -i -u $(id -un)
-docker ps -a | tail -n +2 | grep -q ${gl_containerName} && {
-  docker stop ${gl_containerName}
-  docker rm ${gl_containerName}
-}
+remove_existing_container ${gl_containerName}
 #[cf]
 #[cf]
 #[cf]

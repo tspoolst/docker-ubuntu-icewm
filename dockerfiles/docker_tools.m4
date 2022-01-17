@@ -11,7 +11,7 @@ RUN add-apt-repository \
   stable" && \
   /update-repo-pointers.sh
 RUN PACKAGE_UPDATE && \
-  PACKAGE_INSTALL docker-ce-cli=$(apt-cache madison docker-ce-cli | grep -oE ''`[^[:blank:]]+19\.03\.1[^[:blank:]]+''`) && \'
+  PACKAGE_INSTALL docker-ce-cli=$(apt-cache madison docker-ce-cli | grep -oE ''`[^[:blank:]]+19.03.[^[:blank:]]+''` | head -n 1) && \'
 )dnl
 ifelse_or(DISTRO, `centos', `rhel',
 `COPY os/docker-ce.repo /etc/yum.repos.d/

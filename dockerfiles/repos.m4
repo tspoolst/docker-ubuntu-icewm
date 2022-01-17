@@ -13,7 +13,8 @@ ifelse(DISTRO, `ubuntu', `    apt-transport-https \
     apt-file \'
 )dnl
 ifelse_or(DISTRO, `centos', `rhel', `   deltarpm \
-    initscripts \', `dnl')
+    initscripts \
+    man \', `dnl')
   && \
   PACKAGE_CLEAN
 #[cf]
