@@ -99,6 +99,7 @@ function build_layers {
       ${lc_services} \
       -I${lc_libDir} \
       ${lc_libDir}/build-env_${lc_runlevel}.m4 > Dockerfile || die "Dockerfile compile failed"
+      cp -f Dockerfile Dockerfile-${gl_distroList[${gl_distroID}]%%-*}-${gl_distroList[${gl_distroID}]##*-}-${lc_runlevel}.txt 
     lc_dockerCmd='docker build'
     if [[ $(uname -s) == "Linux" ]] ; then
       if ! host_ip=$(set -o pipefail;ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+') ; then

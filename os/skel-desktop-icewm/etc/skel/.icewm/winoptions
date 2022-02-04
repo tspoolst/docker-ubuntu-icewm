@@ -36,7 +36,7 @@ ROX-Panel.doNotCover: 0
 ROX-Panel.ignoreWinList: 1
 ROX-Panel.ignoreTaskBar: 1
 ROX-Panel.ignoreQuickSwitch: 1
-ROX-Pinboard.doNotCover: 1
+#ROX-Pinboard.doNotCover: 1
 ROX-Pinboard.layer: Desktop
 ROX-Pinboard.ignoreWinList: 1
 ROX-Pinboard.ignoreTaskBar: 1

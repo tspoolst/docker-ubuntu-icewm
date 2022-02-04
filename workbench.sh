@@ -11,7 +11,7 @@ function wb {
     shift
   fi
   lc_containerName="${lc_containerName:-workbench}"
-  if ! docker ps -a | tail -n +2 | grep -q ${lc_containerName} ; then
+  if ! docker ps -a | tail -n +2 | grep -q " ${lc_containerName}$" ; then
     mkdir -p ${HOME}/.vagrant.d/boxes ${HOME}/.vagrant.d/tmp ${HOME}/.terraform
     gl_imageName=tspoolst/build-env_ubuntu-16_cmdline:1.0.0-dev
     docker run \
@@ -57,7 +57,7 @@ function wbd {
     shift
   fi
   lc_containerName="${lc_containerName:-workbench}"
-  docker ps -a | tail -n +2 | grep -q ${lc_containerName} && {
+  docker ps -a | tail -n +2 | grep -q " ${lc_containerName}$" && {
     echo "stopping and removing ${lc_containerName}"
     docker stop ${lc_containerName} &>/dev/null
     docker rm ${lc_containerName} &>/dev/null

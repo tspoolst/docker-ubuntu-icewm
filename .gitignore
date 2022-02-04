@@ -8,3 +8,4 @@ ansible/files
 boxfile.json
 support_tools/
 Dockerfile
+Dockerfile-*

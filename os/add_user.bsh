@@ -1,8 +1,12 @@
 #!/bin/bash
 
-#set -xv
+set -xv
 
 [[ -z "$5" ]] && exit 1
+[[ "${USER_UID}" == 0 ]] && {
+  echo "this is for adding regular users Not root."
+  exit 1
+}
 
 USER_UID="$1"
 USER_GID="$2"
@@ -25,7 +29,7 @@ ${gl_useDockerCLI} && sed -e 's%\(docker:x:\).*%\1'${DOCKER_GID}:${USER_UNAME}'%
 echo "${USER_UNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER_UNAME} && \
 chmod 0440 /etc/sudoers.d/${USER_UNAME} && \
 
-[[ "${USER_HOME%/*}" != "/home" ]] && { rm -rf /home; ln -s ${USER_HOME%/*} /home; }
+[[ "${USER_HOME%/*}" != "/home" ]] && { ln -s ${USER_HOME##*/} /home/; }
 
 mkdir -p ${USER_HOME} && \
 cp -a /etc/skel/{.[[:alnum:]]*,*} ${USER_HOME}/ &>/dev/null
