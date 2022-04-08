@@ -1,6 +1,7 @@
-ifelse(DISTRO, `ubuntu', `define(`FROM',DOCKER_REPO`/build-env_ubuntu-16_base:'WORKBENCH_VERSION)dnl' ,`dnl')
-ifelse(DISTRO, `centos', `define(`FROM',DOCKER_REPO`/build-env_centos-7_base:'WORKBENCH_VERSION)dnl' ,`dnl')
-ifelse(DISTRO, `rhel', `define(`FROM',DOCKER_REPO`/build-env_rhel-7.6_base:'WORKBENCH_VERSION)dnl', `dnl')
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:16.04', `define(`FROM',DOCKER_REPO`/build-env_ubuntu-16.04_base:'WORKBENCH_VERSION)dnl' ,`dnl')
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:20.04', `define(`FROM',DOCKER_REPO`/build-env_ubuntu-20.04_base:'WORKBENCH_VERSION)dnl' ,`dnl')
+ifelse(DISTRO`:'DISTRO_VER, `centos:7', `define(`FROM',DOCKER_REPO`/build-env_centos-7_base:'WORKBENCH_VERSION)dnl' ,`dnl')
+ifelse(DISTRO`:'DISTRO_VER, `rhel:7.6', `define(`FROM',DOCKER_REPO`/build-env_rhel-7.6_base:'WORKBENCH_VERSION)dnl', `dnl')
 include(`header.m4')dnl
 
 include(`base_packages.m4')dnl

@@ -1,6 +1,7 @@
-ifelse(DISTRO, `ubuntu', `define(`FROM',DOCKER_REPO`/build-env_ubuntu-16_cmdline:'WORKBENCH_VERSION)dnl', `dnl')
-ifelse(DISTRO, `centos', `define(`FROM',DOCKER_REPO`/build-env_centos-7_cmdline:'WORKBENCH_VERSION)dnl', `dnl')
-ifelse(DISTRO, `rhel', `define(`FROM',DOCKER_REPO`/build-env_rhel-7.6_cmdline:'WORKBENCH_VERSION)dnl', `dnl')
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:16.04', `define(`FROM',DOCKER_REPO`/build-env_ubuntu-16.04_cmdline:'WORKBENCH_VERSION)dnl' ,`dnl')
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:20.04', `define(`FROM',DOCKER_REPO`/build-env_ubuntu-20.04_cmdline:'WORKBENCH_VERSION)dnl' ,`dnl')
+ifelse(DISTRO`:'DISTRO_VER, `centos:7', `define(`FROM',DOCKER_REPO`/build-env_centos-7_cmdline:'WORKBENCH_VERSION)dnl' ,`dnl')
+ifelse(DISTRO`:'DISTRO_VER, `rhel:7.6', `define(`FROM',DOCKER_REPO`/build-env_rhel-7.6_cmdline:'WORKBENCH_VERSION)dnl', `dnl')
 include(`header.m4')dnl
 
 # include(`atom-editor.m4')dnl
@@ -23,7 +24,7 @@ ln -sv rox /usr/bin/rox-filer'
 
 RUN PACKAGE_UPDATE && \
   PACKAGE_INSTALL \
-    ifelse(DISTRO, `ubuntu', `rox-filer \', `dnl')
+ifelse(DISTRO, `ubuntu', `    rox-filer \', `dnl')
     nedit \
     xterm rxvt-unicode && \
   PACKAGE_CLEAN

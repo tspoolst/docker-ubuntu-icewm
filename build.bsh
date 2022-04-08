@@ -119,7 +119,7 @@ function build_layers {
 #[cf]
 #[of]:function displayMenu {
 function displayMenu {
-  typeset lc_tens lc_ones lc_action lc_message lc_menuList lc_fieldSize lc_selection lc_returnVar
+  typeset i lc_tens lc_ones lc_action lc_message lc_menuList lc_fieldSize lc_selection lc_returnVar
   lc_message="$1"
   eval "lc_menuList=( \"\${$2[@]}\" )"
   lc_fieldSize=$((${#lc_menuList[@]}-1));lc_fieldSize=${#lc_fieldSize}

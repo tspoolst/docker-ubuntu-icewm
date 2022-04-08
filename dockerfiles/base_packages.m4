@@ -1,17 +1,36 @@
 #[of]:install base packages
-ifelse(DISTRO, `ubuntu',
+#[c]ifelse(DISTRO, `ubuntu',
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:16.04',
 `RUN PACKAGE_UPDATE && \
   PACKAGE_INSTALL \
     sudo dialog apt-file dmidecode man bzip2 bsdtar zip unzip whois \
     bash-completion ncdu htop less tree file screen lsof \
     openssh-server openssh-client sshfs \
-    vim mc hexedit rsync wget lftp links lynx dnsutils \
+    vim mc hexedit rsync wget curl lftp links lynx dnsutils \
     iputils-ping \
     nmap tcpdump iftop jnettop \
     make gcc patch \
     ruby ruby-dev python-pip python3-pip jq \
     software-properties-common \
-    coreutils hostname net-tools iproute \
+    coreutils hostname net-tools iproute2 \
+    psmisc \
+    traceroute iperf && \
+  PACKAGE_CLEAN'
+)dnl
+#[c]bsdtar python-pip iproute
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:20.04',
+`RUN PACKAGE_UPDATE && \
+  PACKAGE_INSTALL \
+    sudo dialog apt-file dmidecode man bzip2 libarchive-tools zip unzip whois \
+    bash-completion ncdu htop less tree file screen lsof \
+    openssh-server openssh-client sshfs \
+    vim mc hexedit rsync wget curl lftp links lynx dnsutils \
+    iputils-ping \
+    nmap tcpdump iftop jnettop \
+    make gcc patch \
+    ruby ruby-dev python2 python3-pip jq \
+    software-properties-common \
+    coreutils hostname net-tools iproute2 \
     psmisc \
     traceroute iperf && \
   PACKAGE_CLEAN'
@@ -35,8 +54,23 @@ RUN PACKAGE_UPDATE && \
   PACKAGE_CLEAN'
 )dnl
 
-RUN pip2 install --upgrade pip==20.3.4 jinja2==2.11.3 pyyaml==5.4.1 requests jenkinsapi==0.3.9
-RUN pip3 install --upgrade pip==20.3.4 pyyaml requests yq jenkinsapi==0.3.9
+RUN mkdir -p /usr/share/bash-completion/completions
+
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:20.04',
+`RUN ${WGET} http://`'M4_LOCALCACHE`'bootstrap.pypa.io/pip/2.7/get-pip.py && \
+  cd /tmp/ && \
+  python2 get-pip.py && \
+  rm -rf /tmp/*'
+)dnl
+
+ENV PYTHONWARNINGS ignore
+RUN pip2 install --upgrade pip==20.3.4
+RUN pip2 install --upgrade jinja2==2.11.3 pyyaml==5.4.1 requests jenkinsapi==0.3.9
+RUN pip3 install --upgrade pip==20.3.4
+RUN pip3 install --upgrade pyyaml requests yq jenkinsapi==0.3.9
+ifelse(DISTRO, `ubuntu',
+`RUN rm -fv /usr/bin/pip*'
+)dnl
 
 RUN rm -f /etc/ssh/ssh_host_*; :
 #[cf]

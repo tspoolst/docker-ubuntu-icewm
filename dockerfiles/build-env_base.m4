@@ -1,6 +1,7 @@
-ifelse(DISTRO, `ubuntu', `define(`FROM',`ubuntu:16.04')dnl', `dnl')
-ifelse(DISTRO, `centos', `define(`FROM',`centos:7')dnl', `dnl')
-ifelse(DISTRO, `rhel', `define(`FROM',`10.10.61.17:5000/rhel7.6:layer1-v0.1.0')dnl', `dnl')
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:16.04', `define(`FROM',`ubuntu:16.04')dnl', `dnl')
+ifelse(DISTRO`:'DISTRO_VER, `ubuntu:20.04', `define(`FROM',`ubuntu:20.04')dnl', `dnl')
+ifelse(DISTRO`:'DISTRO_VER, `centos:7', `define(`FROM',`centos:7')dnl', `dnl')
+ifelse(DISTRO`:'DISTRO_VER, `rhel:7.6', `define(`FROM',`10.10.61.17:5000/rhel7.6:layer1-v0.1.0')dnl', `dnl')
 include(`header.m4')dnl
 
 COPY os/keyboard /etc/default/keyboard
@@ -26,3 +27,7 @@ RUN echo Etc/UTC \> /etc/localtime && \
   PACKAGE_CLEAN
 
 include(`repos.m4')dnl
+
+#[c]ifelse(DISTRO`:'DISTRO_VER, `ubuntu:20.04', `
+#[c]`RUN unminimize'
+#[c])dnl

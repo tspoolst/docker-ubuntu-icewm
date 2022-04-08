@@ -26,7 +26,6 @@ RUN ${WGET} http://`'M4_LOCALCACHE`'mirrors.edge.kernel.org/pub/software/scm/git
   make install-man && \
   cd .. && \
   rm -rf /tmp/*
-RUN mkdir -p usr/share/bash-completion/completions
 COPY os/completions-git /usr/share/bash-completion/completions/git
 RUN ln -sv git /usr/share/bash-completion/completions/gitk
 #[cf]

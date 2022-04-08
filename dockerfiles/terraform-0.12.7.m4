@@ -2,7 +2,7 @@
 #disable terraform upgrade check
 ENV CHECKPOINT_DISABLE=yes
 
-RUN ${WGET} https://`'M4_LOCALCACHE`'dl.google.com/go/go1.12.9.linux-amd64.tar.gz && \
+RUN ${WGET} http://`'M4_LOCALCACHE`'dl.google.com/go/go1.12.9.linux-amd64.tar.gz && \
   tar zxf /tmp/go1.12.9.linux-amd64.tar.gz -C /usr/local && \
   rm -rf /tmp/*
 RUN ${WGET} http://`'M4_LOCALCACHE`'releases.hashicorp.com/terraform/0.12.7/terraform_0.12.7_linux_amd64.zip && \

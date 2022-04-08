@@ -1,6 +1,7 @@
-ubuntu-16
+ubuntu-16.04
 #ubuntu-18
 #ubuntu-19
+ubuntu-20.04
 centos-7
 #rhel-7.5
 #rhel-7.6

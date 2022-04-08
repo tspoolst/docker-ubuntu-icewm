@@ -10,11 +10,10 @@ RUN PACKAGE_UPDATE && \
     net-tools \
 ifelse(DISTRO, `ubuntu', `    apt-transport-https \
     apt-utils \
-    apt-file \'
+    apt-file && \'
 )dnl
-ifelse_or(DISTRO, `centos', `rhel', `   deltarpm \
+ifelse_or(DISTRO, `centos', `rhel', `    deltarpm \
     initscripts \
-    man \', `dnl')
-  && \
+    man && \', `dnl')
   PACKAGE_CLEAN
 #[cf]

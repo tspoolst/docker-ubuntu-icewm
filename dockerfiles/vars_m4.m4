@@ -18,5 +18,5 @@ define(`PACKAGE_CLEAN',PACKAGE_CMD `clean all && \
     rm -rf /var/lib/yum/{repos,yumdb,history} /var/cache/yum/* && \
     if [[ -e /bin/mandb ]];then mandb;fi')dnl', `dnl')
 dnl define(`PACKAGE_CLEAN',`:')dnl
-dnl define(`M4_LOCALCACHE',`host.docker.internal:8080/')dnl
-define(`M4_LOCALCACHE',`')dnl
+define(`M4_LOCALCACHE',`host.docker.internal:8080/')dnl
+dnl define(`M4_LOCALCACHE',`')dnl
