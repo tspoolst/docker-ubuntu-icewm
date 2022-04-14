@@ -13,7 +13,7 @@ function wb {
   lc_containerName="${lc_containerName:-workbench}"
   if ! docker ps -a | tail -n +2 | grep -q " ${lc_containerName}$" ; then
     mkdir -p ${HOME}/.vagrant.d/boxes ${HOME}/.vagrant.d/tmp ${HOME}/.terraform
-    gl_imageName=tspoolst/build-env_ubuntu-16.04_cmdline:1.0.0-dev
+    gl_imageName=tspoolst/build-env_ubuntu-16.04_cmdline:1.1.0
     docker run \
       -v ${HOME}:${HOME}/hosthome \
       -v ${HOME}/git:${HOME}/git \
@@ -59,7 +59,7 @@ function wbg {
   lc_containerName="${lc_containerName:-workbench}"
   if ! docker ps -a | tail -n +2 | grep -q " ${lc_containerName}$" ; then
     mkdir -p ${HOME}/.vagrant.d/boxes ${HOME}/.vagrant.d/tmp ${HOME}/.terraform
-    gl_imageName=tspoolst/build-env_ubuntu-20.04_desktop:1.0.0-dev
+    gl_imageName=tspoolst/build-env_ubuntu-20.04_desktop:1.1.0
     docker run \
       -v ${HOME}:${HOME}/hosthome \
       -v ${HOME}/git:${HOME}/git \

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+gl_tag=$(git tag | tail -n 1)
+
+
+git add . -v
+git commit -m "${1:-fix}"
+git push -v
+
+git push --delete origin ${gl_tag}
+git tag -d ${gl_tag};
+git tag ${gl_tag};
+git push origin ${gl_tag}
