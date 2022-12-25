@@ -309,6 +309,7 @@ docker run \
     fi) \
   -d \
   --restart always \
+  -p 5901:5901 \
   ${gl_containerOptions[@]} \
   --name ${gl_containerName} \
   -l ${gl_containerName} \

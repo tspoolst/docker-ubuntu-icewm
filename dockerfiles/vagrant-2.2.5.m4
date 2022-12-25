@@ -20,6 +20,6 @@ RUN ${WGET} http://`'M4_LOCALCACHE`'raw.github.com/kura/vagrant-bash-completion/
 RUN vagrant plugin install vagrant-scp
 RUN vagrant plugin install vagrant-vbox-snapshot
 RUN vagrant plugin install vagrant-hostmanager
-RUN vagrant plugin install pry-byebug
+RUN vagrant plugin install --plugin-version 3.9.0 pry-byebug
 
 #[cf]
